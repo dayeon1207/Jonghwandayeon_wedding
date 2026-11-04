@@ -56,11 +56,11 @@ section{position:relative;z-index:1;padding:80px 24px;text-align:center}
 
 /* ===== 1. OPENING ===== */
 #opening{position:fixed;inset:0;z-index:100;height:100dvh;background:#1c0408;overflow:hidden;cursor:pointer;touch-action:manipulation;outline:none}
-.curtain{position:absolute;top:0;bottom:0;width:50.5%;background:#4a0a14 url(assets/curtain.jpg) repeat-x;background-size:auto 100%;transition:transform 1.9s cubic-bezier(.65,0,.25,1);will-change:transform;z-index:2}
-.curtain.l{left:0;background-position:left center;transform-origin:left center;box-shadow:inset -28px 0 44px rgba(0,0,0,.5)}
-.curtain.r{right:0;background-position:right center;transform-origin:right center;box-shadow:inset 28px 0 44px rgba(0,0,0,.5)}
-#opening.open .curtain.l{transform:translateX(-102%) scaleX(.7)}
-#opening.open .curtain.r{transform:translateX(102%) scaleX(.7)}
+.curtain{position:absolute;top:0;bottom:0;width:50.5%;background:#4a0a14 url(assets/curtain.jpg) repeat-x;background-size:auto 100%;transition:transform 3s cubic-bezier(.4,0,.35,1);will-change:transform;z-index:2}
+.curtain.l{left:0;background-position:left center;transform-origin:left bottom;box-shadow:inset -28px 0 44px rgba(0,0,0,.5)}
+.curtain.r{right:0;background-position:right center;transform-origin:right bottom;box-shadow:inset 28px 0 44px rgba(0,0,0,.5)}
+#opening.open .curtain.l{transform:translateX(-104%) scaleX(.7) skewX(5deg)}
+#opening.open .curtain.r{transform:translateX(104%) scaleX(.7) skewX(-5deg)}
 .dark{position:absolute;inset:0;z-index:3;background:radial-gradient(ellipse 80% 60% at 50% 46%,rgba(4,0,1,.45) 0,rgba(8,0,2,.72) 65%,rgba(8,0,2,.88) 100%);pointer-events:none;opacity:.4;animation:dim 2s ease-out .3s forwards;transition:opacity .8s}
 @keyframes dim{to{opacity:1}}
 .stage{position:absolute;inset:0;z-index:5;display:grid;place-items:center;padding-bottom:6dvh;pointer-events:none;transition:opacity .6s}
@@ -81,7 +81,7 @@ section{position:relative;z-index:1;padding:80px 24px;text-align:center}
 /* ===== 2. MAIN ===== */
 #main{height:100vh;height:var(--mh,100svh);padding:0;background:#1a1a1a url('assets/main.jpg') center top/auto 100% no-repeat}
 
-#main{transition:opacity 2s ease-out}
+#main{transition:opacity 1.8s ease-out}
 body.pre #main{opacity:0}
 /* ===== 3. WE ARE GETTING MARRIED ===== */
 #intro{padding-top:108px;overflow:hidden;background:url(assets/sunlight.jpg) center top/100% auto repeat-y,#e0ddd4}
@@ -94,7 +94,8 @@ body.pre #main{opacity:0}
 .poem{margin-top:48px;font-size:15px;line-height:2.1}
 .invite-msg{margin-top:48px;font-size:15px;line-height:2.1}
 .intro-video{width:calc(100% + 48px);margin:40px -24px 0;background:rgba(255,255,255,.35)}
-.intro-video video{display:block;width:100%;height:auto}
+.intro-video video{display:block;width:100%;height:auto;pointer-events:none;-webkit-touch-callout:none;user-select:none}
+.intro-video video::-webkit-media-controls,.intro-video video::-webkit-media-controls-panel,.intro-video video::-webkit-media-controls-start-playback-button,.intro-video video::-webkit-media-controls-overlay-play-button{display:none!important;-webkit-appearance:none}
 .iv-ph{aspect-ratio:16/9;display:grid;place-items:center;border:1px dashed rgba(185,154,106,.8);font-size:13px;color:#9a8a6c}
 .poem small{display:block;margin-top:24px;font-size:13px;color:var(--gold);letter-spacing:.04em}
 .family{display:flex;flex-direction:column;gap:48px;margin-top:96px}
@@ -182,7 +183,7 @@ body.pre #main{opacity:0}
 .colon{height:80px;line-height:76px;font-size:28px;color:var(--main)}
 .cd-msg{margin-top:40px;font-size:14px;line-height:2;font-weight:700;white-space:nowrap}
 .cd-msg b{color:var(--main);font-weight:800}
-.cd-msg .num{display:inline-block;min-width:56px;height:52px;line-height:46px;font-size:16px;vertical-align:middle;margin-top:-12px;margin-bottom:-12px;text-align:center;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B99A6A' d='M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z'/%3E%3C/svg%3E") center/contain no-repeat;color:var(--main);font-weight:800;padding:0 2px;margin-left:2px;margin-right:2px}
+.cd-msg .num{display:inline-block;min-width:56px;height:52px;line-height:46px;font-size:16px;vertical-align:middle;margin-top:-12px;margin-bottom:-12px;position:relative;top:-8px;text-align:center;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B99A6A' d='M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z'/%3E%3C/svg%3E") center/contain no-repeat;color:var(--main);font-weight:800;padding:0 2px;margin-left:2px;margin-right:2px}
 
 /* ===== 6. LOCATION ===== */
 #location{padding-top:104px;background:url(assets/sunlight.jpg) center 500px/100% auto repeat-y,#e0ddd4}
@@ -193,8 +194,9 @@ body.pre #main{opacity:0}
 .nm-pin span{position:absolute;left:50%;top:42px;transform:translateX(-50%);white-space:nowrap;font:700 13px/1.2 'Nanum Myeongjo',serif;color:#34332F;text-shadow:-1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff,1px 1px 0 #fff,0 0 4px #fff}
 .nmap-ph{height:100%;display:grid;place-items:center;padding:24px;font-size:13px;color:var(--char);opacity:.7;line-height:1.8}
 .map iframe{width:100%;height:280px;border:0;border-radius:var(--r);box-shadow:var(--shadow);display:block;filter:sepia(.25) saturate(.9)}
-.map-links{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding:0 4px}
-.map-links a{display:flex;align-items:center;gap:6px;padding:8px 2px;font-size:15px;font-weight:700;color:var(--main);white-space:nowrap}
+.map-links{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);column-gap:18px;align-items:center;margin-top:16px}
+.map-links a:nth-child(1){justify-self:end}.map-links a:nth-child(3){justify-self:start}
+.map-links a{display:flex;align-items:center;gap:5px;padding:8px 2px;font-size:14px;font-weight:700;color:var(--main);white-space:nowrap}
 .map-links img,.map-links svg{flex:none;display:block}
 .addr{margin-top:32px;font-size:14px;line-height:2}
 .addr b{color:var(--main)}
@@ -249,9 +251,9 @@ body.pre #main{opacity:0}
 .tag-wrap{position:relative;margin-top:104px;width:min(320px,86vw);transform-origin:50% 0}
 #rsvpModal.show .tag-wrap{animation:tagDrop 1.15s cubic-bezier(.22,.7,.3,1) both}
 @keyframes tagDrop{0%{transform:translateY(-110vh) rotate(-3deg)}52%{transform:translateY(10px) rotate(1.6deg)}70%{transform:translateY(-5px) rotate(-.9deg)}86%{transform:translateY(2px) rotate(.4deg)}100%{transform:none}}
-.tag-thread{position:absolute;left:50%;top:-282px;margin-left:-60px;z-index:3;pointer-events:none;overflow:visible}
-.tag{position:relative;padding:84px 22px 28px;border-radius:10px;background:var(--paper),#faf8f3;border:1px solid rgba(91,13,29,.16);box-shadow:0 14px 34px rgba(0,0,0,.4)}
-.grommet{position:absolute;left:50%;top:22px;width:38px;height:38px;margin-left:-19px;border-radius:50%;z-index:4;background:radial-gradient(circle,rgba(40,25,18,.55) 0 10px,#d9c08a 10.5px 12px,#a8844b 13px 19px);box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.tag-ribbon{position:absolute;left:50%;top:-360px;width:46px;height:384px;margin-left:-23px;z-index:3;pointer-events:none;background:repeating-linear-gradient(180deg,#3b0a14 0 1.6px,#56162a 1.6px 3.2px);box-shadow:inset 2px 0 0 rgba(0,0,0,.32),inset -2px 0 0 rgba(0,0,0,.32),0 2px 5px rgba(0,0,0,.3)}
+.tag{position:relative;padding:62px 22px 28px;border-radius:2px;background:var(--paper),#f4f1e9;border:1px solid rgba(60,30,20,.1);box-shadow:0 14px 34px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.5)}
+.tag-slot{position:absolute;left:50%;top:17px;width:62px;height:11px;margin-left:-31px;z-index:2;background:#17100f;border-radius:1px;box-shadow:inset 0 1px 2px rgba(0,0,0,.6)}
 .tag .letter{margin:0;padding:0;box-shadow:none;border-radius:0;background:none;text-align:left}
 .tag .letter::before{display:none}
 .tag .fld{margin-top:14px}
@@ -358,7 +360,7 @@ body.pre .music{opacity:0;pointer-events:none}
 .thanks{font-family:var(--en);font-size:40px;letter-spacing:.06em;color:var(--main);line-height:1.1}
 .bye{margin-top:24px;font-size:14px;line-height:2.1}
 .f-btns{display:flex;flex-direction:column;gap:8px;margin:40px auto 0;max-width:280px}
-.snap-cam-link{display:block;width:62%;max-width:300px;margin:133px auto 0;-webkit-tap-highlight-color:transparent;transition:transform .2s}
+.snap-cam-link{display:block;width:62%;max-width:300px;margin:114px auto 0;-webkit-tap-highlight-color:transparent;transition:transform .2s}
 .snap-msg{margin-top:72px;text-align:center}
 .snap-cam-link:active{transform:scale(.97)}
 .snap-cam-link .snap-cam{width:100%;max-width:none;margin:0}
@@ -546,14 +548,8 @@ body.pre .music{opacity:0;pointer-events:none}
 <div id="modal" role="dialog" aria-modal="true"><button id="m-x" aria-label="닫기"></button><div class="m-card" id="mCard"></div></div>
 <div id="rsvpModal" role="dialog" aria-modal="true" aria-label="참석 여부 전달"><button id="r-x" type="button" aria-label="닫기"></button>
   <div class="tag-wrap">
-    <svg class="tag-thread" viewBox="0 0 120 320" width="120" height="320" aria-hidden="true">
-      <g fill="none" stroke-linecap="round">
-        <path d="M49 -10C49 110 53 220 57 282" stroke="#5b0d1d" stroke-width="3.2"/><path d="M71 -10C71 110 67 220 63 282" stroke="#5b0d1d" stroke-width="3.2"/>
-        <path d="M49 -10C49 110 53 220 57 282" stroke="#a14257" stroke-width="1.1" stroke-dasharray="2 4"/><path d="M71 -10C71 110 67 220 63 282" stroke="#a14257" stroke-width="1.1" stroke-dasharray="2 4"/>
-        <path d="M57 282C50 296 52 308 60 316C68 308 70 296 63 282" stroke="#5b0d1d" stroke-width="3.2"/>
-        <path d="M57 282C50 296 52 308 60 316C68 308 70 296 63 282" stroke="#a14257" stroke-width="1.1" stroke-dasharray="2 4"/>
-      </g></svg>
-    <div class="tag"><i class="grommet" aria-hidden="true"></i>
+    <div class="tag-ribbon" aria-hidden="true"></div>
+    <div class="tag"><i class="tag-slot" aria-hidden="true"></i>
   <form class="letter" id="rsvpForm" novalidate>
     <div class="fld"><label>참석 여부</label><div class="seg"><input type="radio" name="attend" id="a1" value="참석" checked><label for="a1">참석</label><input type="radio" name="attend" id="a2" value="불참"><label for="a2">불참</label><input type="radio" name="attend" id="a3" value="미정"><label for="a3">미정</label></div></div>
     <div class="fld"><label>구분</label><div class="seg"><input type="radio" name="side" id="s1" value="신랑측" checked><label for="s1">신랑측</label><input type="radio" name="side" id="s2" value="신부측"><label for="s2">신부측</label></div></div>
@@ -591,7 +587,7 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
   const o=$('#opening');let done=false;
   function open(){
     if(done)return;done=true;window.__setMH&&window.__setMH();document.body.classList.remove('pre');o.classList.add('open');window.__startBgm&&window.__startBgm();
-    setTimeout(()=>{o.style.display='none';document.body.classList.remove('locked');window.scrollTo(0,0)},2000);
+    setTimeout(()=>{o.style.display='none';document.body.classList.remove('locked');window.scrollTo(0,0)},3400);
   }
   o.addEventListener('click',open);
   o.addEventListener('touchend',e=>{e.preventDefault();open()},{passive:false});
@@ -699,10 +695,11 @@ $('#tmapLink').addEventListener('click',e=>{
 
 /* ---- 소개 영상 (config.js 의 INTRO_VIDEO) ---- */
 (function(){const src=CFG.INTRO_VIDEO,box=$('#introVideo');if(!src)return;setTimeout(init,3000);function init(){
-  const v=document.createElement('video');v.src=src;v.muted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.controls=true;v.preload='metadata';if(CFG.INTRO_VIDEO_POSTER)v.poster=CFG.INTRO_VIDEO_POSTER;
+  const v=document.createElement('video');v.src=src;v.muted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.controls=false;v.autoplay=true;v.disablePictureInPicture=true;v.setAttribute('disableremoteplayback','');v.setAttribute('tabindex','-1');v.setAttribute('aria-hidden','true');v.preload='auto';if(CFG.INTRO_VIDEO_POSTER)v.poster=CFG.INTRO_VIDEO_POSTER;
   box.innerHTML='';box.appendChild(v);
-  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){v.play().catch(()=>{})}else v.pause()}),{threshold:.5}).observe(v);}
-})();
+  let vis=false;new IntersectionObserver(es=>es.forEach(e=>{vis=e.isIntersecting;if(vis){v.play().catch(()=>{})}else v.pause()}),{threshold:.3}).observe(v);
+  ['touchend','click'].forEach(t=>document.addEventListener(t,()=>{if(vis&&v.paused)v.play().catch(()=>{})},{passive:true})); // 저전력 모드 등으로 자동재생이 막히면 첫 터치 후 재생
+}})();
 
 
 /* ---- RSVP 하단 시트: RSVP 섹션을 지나 마음 전하실 곳이 보이기 시작할 때 한 번 올라옴 ---- */
