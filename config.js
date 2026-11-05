@@ -15,7 +15,7 @@ window.INVITE_CONFIG = {
   NAVER_MAP_CLIENT_ID: "po39mk825f",                                   // 네이버 클라우드 플랫폼 > Maps > Dynamic Map 의 Client ID (README 참고)
   INTRO_VIDEO: "assets/intro.mp4",                                          // 예: "assets/intro.mp4" (h264 mp4, faststart 권장)
   INTRO_VIDEO_POSTER: "assets/intro_poster.jpg",                                    // 선택: 영상 로딩 전 표시할 이미지 경로
-  VENUE_LAT: 37.4163,                                         // 지도 검색 실패 시 대체 좌표 (아이벡스컨벤션 / 대략값 - 네이버지도에서 확인 후 수정)
-  VENUE_LNG: 126.8815,
+  VENUE_LAT: 37.4184882,                                      // 아이벡스컨벤션(양지로 17) 위도
+  VENUE_LNG: 126.8827907,
   GALLERY: [ /* 예: "assets/g1.jpg", "assets/g2.jpg" */ ]
 };

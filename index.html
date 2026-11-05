@@ -142,7 +142,7 @@ body.pre #main{opacity:0}
 .lace.l{aspect-ratio:959/625}
 .lace .ph{position:absolute;left:12%;right:11.52%;top:14.9%;bottom:14.2%;background:#e9dcc2;overflow:hidden}
 .lace.l .ph{left:14.9%;right:14.2%;top:11.52%;bottom:12%}
-.lace .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.lace .ph img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;-webkit-touch-callout:none;-webkit-user-drag:none;user-select:none}
 .lace .fr{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;display:block}
 .lace.empty{cursor:default}
 .g-note{margin-top:24px;font-size:12px;opacity:.6}
@@ -153,12 +153,14 @@ body.pre #main{opacity:0}
 #v-close::before,#v-close::after{content:"";position:absolute;left:8px;right:8px;top:50%;height:1px;background:#fff;transform:rotate(45deg)}
 #v-close::after{transform:rotate(-45deg)}
 #v-stage{flex:1;width:100%;display:flex;align-items:center;justify-content:center;position:relative;min-height:0;padding:64px 8px 8px}
-#v-img{max-width:100%;max-height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none;touch-action:pan-y;transition:opacity .25s}
+#v-img{max-width:100%;max-height:100%;object-fit:contain;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;-webkit-touch-callout:none;pointer-events:none;touch-action:pan-y;transition:opacity .25s}
+#viewer,#gallery{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .v-nav{position:absolute;top:50%;width:48px;height:48px;margin-top:-24px;color:#fff;font-size:28px;font-weight:200;opacity:.8}
 #v-prev{left:0}#v-next{right:0}
 #v-thumbs{display:flex;justify-content:center;gap:8px;padding:16px 16px max(16px,env(safe-area-inset-bottom));max-width:100%;overflow-x:auto}
-#v-thumbs img{width:48px;height:64px;object-fit:cover;border-radius:4px;border:2px solid transparent;opacity:1;flex:none;cursor:pointer}
-#v-thumbs img.cur{border-color:var(--gold);transform:scale(1.08)}
+#v-thumbs .vt{flex:none;cursor:pointer;-webkit-touch-callout:none}
+#v-thumbs .vt img{display:block;width:48px;height:64px;object-fit:cover;border-radius:4px;border:2px solid transparent;pointer-events:none;-webkit-user-drag:none;-webkit-touch-callout:none}
+#v-thumbs .vt.cur img{border-color:var(--gold);transform:scale(1.08)}
 
 /* ===== 5. SAVE THE DATE ===== */
 .heart-s{display:inline-block;width:24px;height:24px;background:var(--heart) center/contain no-repeat}
@@ -470,7 +472,7 @@ body.pre .music{opacity:0;pointer-events:none}
 
 <!-- 7. DETAIL -->
 <section id="detail">
-  <h2 class="title-ko" style="font-size:18px;line-height:1.8">소중한 분들을 모시고자 안내드립니다.</h2>
+  <div class="stitle"><div class="t-en">Notice</div><div class="t-ko">안내사항</div></div>
   <div class="det">
     <h3>주차 안내</h3>
     <p>AK플라자 지하 B3~B8에 주차가 가능하며, <mark>지하 B5~B6</mark>에 주차하시면 예식장으로 이동하기 가장 편리합니다. (총 3,200대 주차 가능)</p>
@@ -498,7 +500,7 @@ body.pre .music{opacity:0;pointer-events:none}
 
 <!-- 9. 마음 전하실 곳 -->
 <section id="gift">
-  <h2 class="title-ko" style="font-size:18px;line-height:1.8">마음 전하실 곳</h2>
+  <div class="stitle"><div class="t-en">Account</div><div class="t-ko">마음 전하실 곳</div></div>
   <p class="bye" style="margin-top:24px">참석이 어려우신 분들을 위해<br>계좌번호를 안내드립니다.<br>너그러운 마음으로 양해 부탁드립니다.</p>
   <div id="accs"></div>
 </section>
@@ -609,7 +611,7 @@ let GAL=[];
 const ROT=[-2.5,1.8,-1.2,2.6,-2,1.4,2.2,-1.8,1];
 const frame=o=>'assets/lace_'+(o==='l'?'l':'p')+'.webp';
 const mkItem=u=>({full:u,grid:u,thumb:u});
-const V=$('#viewer'),VI=$('#v-img'),VT=$('#v-thumbs');let vi=0;
+const V=$('#viewer'),VI=$('#v-img'),VT=$('#v-thumbs');let vi=0;['#viewer','#gallery'].forEach(q=>{const el=document.querySelector(q);['contextmenu','dragstart'].forEach(t=>el.addEventListener(t,e=>e.preventDefault()))});
 function buildGallery(){
   const pg=$('#gPager'),dots=$('#gDots');pg.innerHTML='';dots.innerHTML='';VT.innerHTML='';
   const n=GAL.length||9,pages=Math.ceil(n/9);
@@ -619,7 +621,7 @@ function buildGallery(){
       const d=document.createElement('div'),k=i%9;
       const ori=GAL.length?'p':(k%3===1?'l':'p');
       d.className='lace '+ori+(GAL.length?'':' empty');d.style.setProperty('--rot',ROT[k]+'deg');
-      d.innerHTML='<div class="ph">'+(GAL.length?'<img loading="lazy" alt="갤러리 사진 '+(i+1)+'" src="'+esc(GAL[i].grid)+'">':'')+'</div><img class="fr" alt="" src="'+frame(ori)+'">';
+      d.innerHTML='<div class="ph">'+(GAL.length?'<img loading="lazy" draggable="false" alt="갤러리 사진 '+(i+1)+'" src="'+esc(GAL[i].grid)+'">':'')+'</div><img class="fr" alt="" src="'+frame(ori)+'">';
       if(GAL.length){const im=d.querySelector('.ph img'),fr=d.querySelector('.fr');im.onload=()=>{const o=im.naturalWidth>im.naturalHeight?'l':'p';d.classList.remove('p','l');d.classList.add(o);fr.src=frame(o)};d.onclick=()=>openV(i)}
       page.appendChild(d);
     }
@@ -628,7 +630,7 @@ function buildGallery(){
   }
   const setDot=()=>{const k=Math.round(pg.scrollLeft/pg.clientWidth);[...dots.children].forEach((d,j)=>d.classList.toggle('on',j===k))};
   pg.onscroll=setDot;setDot();
-  GAL.forEach((it,k)=>{const t=document.createElement('img');t.src=it.thumb;t.alt='';t.onclick=()=>showV(k);VT.appendChild(t)});
+  GAL.forEach((it,k)=>{const t=document.createElement('div');t.className='vt';t.onclick=()=>showV(k);const im=new Image();im.src=it.thumb;im.alt='';im.draggable=false;t.appendChild(im);VT.appendChild(t)});
 }
 function openV(i){V.classList.add('show');showV(i);document.body.style.overflow='hidden'}
 function showV(i){vi=(i+GAL.length)%GAL.length;VI.style.opacity=0;VI.src=GAL[vi].full;VI.onload=()=>VI.style.opacity=1;[...VT.children].forEach((t,k)=>t.classList.toggle('cur',k===vi));VT.children[vi]?.scrollIntoView({inline:'center',block:'nearest'})}
@@ -661,25 +663,14 @@ let lastTap=0;document.addEventListener('touchend',e=>{if(inMap(e))return;const 
   const ph=t=>box.innerHTML='<div class="nmap-ph">'+t+'</div>';
   if(!id){ph('네이버 지도 클라이언트 ID를<br>config.js에 입력하면 지도가 표시됩니다');return}
   window.navermap_authFailure=()=>ph('네이버 지도 인증에 실패했습니다.<br>NCP 콘솔의 웹 서비스 URL을 확인해 주세요');
-  const sc=document.createElement('script');sc.src='https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId='+encodeURIComponent(id)+'&submodules=geocoder';
+  const sc=document.createElement('script');sc.src='https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId='+encodeURIComponent(id)+'';
   sc.onerror=()=>ph('지도를 불러오지 못했습니다');
   sc.onload=()=>{
-    // 검색 실패 시 대체 좌표 (config.js 의 VENUE_LAT / VENUE_LNG 로 조정 가능)
-    const fb=new naver.maps.LatLng(CFG.VENUE_LAT||37.4163,CFG.VENUE_LNG||126.8815);
-    const build=ll=>{
-      const m=new naver.maps.Map(box,{center:ll,zoom:16,draggable:true,pinchZoom:true,scrollWheel:true,keyboardShortcuts:true,disableDoubleClickZoom:false,disableDoubleTapZoom:false,disableTwoFingerTapZoom:false,zoomControl:true,zoomControlOptions:{position:naver.maps.Position.TOP_RIGHT},mapDataControl:false,scaleControl:false});
-      const pin='<div class="nm-pin"><svg width="30" height="40" viewBox="0 0 30 40"><path d="M15 39C15 39 2 24 2 14a13 13 0 0 1 26 0c0 10-13 25-13 25z" fill="#5b0d1d" stroke="#fff" stroke-width="2"/><path d="M15 20.5s-5.5-3.6-5.5-7.6a3.1 3.1 0 0 1 5.5-2 3.1 3.1 0 0 1 5.5 2c0 4-5.5 7.6-5.5 7.6z" fill="#fff"/></svg><span>아이벡스컨벤션</span></div>';
-      new naver.maps.Marker({position:ll,map:m,title:'아이벡스컨벤션',icon:{content:pin,anchor:new naver.maps.Point(15,40)}});
-    };
-    const queries=['경기 광명시 양지로 17','경기 광명시 일직동 512-3'];
-    const tryQ=i=>{
-      if(i>=queries.length){build(fb);return}
-      naver.maps.Service.geocode({query:queries[i]},(st,res)=>{
-        const a=st===naver.maps.Service.Status.OK&&res.v2&&res.v2.addresses&&res.v2.addresses[0];
-        a?build(new naver.maps.LatLng(+a.y,+a.x)):tryQ(i+1);
-      });
-    };
-    try{tryQ(0)}catch(e){build(fb)}
+    // 아이벡스컨벤션(경기 광명시 양지로 17, AK플라자 광명 5층) 좌표. config.js 의 VENUE_LAT / VENUE_LNG 로 조정 가능
+    const ll=new naver.maps.LatLng(CFG.VENUE_LAT||37.4184882,CFG.VENUE_LNG||126.8827907);
+    const m=new naver.maps.Map(box,{center:ll,zoom:16,draggable:true,pinchZoom:true,scrollWheel:true,keyboardShortcuts:true,disableDoubleClickZoom:false,disableDoubleTapZoom:false,disableTwoFingerTapZoom:false,zoomControl:true,zoomControlOptions:{position:naver.maps.Position.TOP_RIGHT},mapDataControl:false,scaleControl:false});
+    const pin='<div class="nm-pin"><svg width="30" height="40" viewBox="0 0 30 40"><path d="M15 39C15 39 2 24 2 14a13 13 0 0 1 26 0c0 10-13 25-13 25z" fill="#5b0d1d" stroke="#fff" stroke-width="2"/><path d="M15 20.5s-5.5-3.6-5.5-7.6a3.1 3.1 0 0 1 5.5-2 3.1 3.1 0 0 1 5.5 2c0 4-5.5 7.6-5.5 7.6z" fill="#fff"/></svg><span>아이벡스컨벤션</span></div>';
+    new naver.maps.Marker({position:ll,map:m,title:'아이벡스컨벤션',icon:{content:pin,anchor:new naver.maps.Point(15,40)}});
   };
   new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){o.disconnect();document.head.appendChild(sc)}},{rootMargin:'800px'}).observe(box); // 지도 근처로 스크롤할 때 불러옴
 })();
