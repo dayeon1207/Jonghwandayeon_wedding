@@ -10,7 +10,8 @@ window.INVITE_CONFIG = {
     appId: "YOUR_APP_ID"
   },
   KAKAO_JS_KEY: "",                              // 카카오 JavaScript 키
-  GOOGLE_PHOTOS_URL: "",                         // 구글 포토 공유앨범 링크 (추후 입력)
+  GOOGLE_PHOTOS_URL: "https://naver.me/5T0pWYYl",   // 하객 사진 업로드 링크 (Dropbox 파일 요청 등)
+  PHOTO_DEADLINE: "2027-03-06T23:59:59+09:00",           // 이 시각(한국시간) 이후에는 청첩장의 업로드 버튼이 닫힘 (결혼식 2주 후)
   ROUTE_MAP: "assets/route.jpg",                             // 예: "assets/route.jpg" (260927약도 업로드 후)
   NAVER_MAP_CLIENT_ID: "po39mk825f",                                   // 네이버 클라우드 플랫폼 > Maps > Dynamic Map 의 Client ID (README 참고)
   INTRO_VIDEO: "assets/intro.mp4",                                          // 예: "assets/intro.mp4" (h264 mp4, faststart 권장)

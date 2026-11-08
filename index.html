@@ -10,7 +10,7 @@
 <meta property="og:image" content="assets/share.jpg">
 <link rel="preload" as="image" href="assets/curtain.jpg">
 <link rel="preload" as="font" type="font/otf" href="assets/fonts/ROMANTICE.otf" crossorigin>
-<link rel="preload" as="image" href="assets/main.jpg" fetchpriority="low">
+<link rel="preload" as="image" href="assets/main.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Great+Vibes&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -55,7 +55,8 @@ section{position:relative;z-index:1;padding:80px 24px;text-align:center}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 
 /* ===== 1. OPENING ===== */
-#opening{position:fixed;inset:0;z-index:100;height:100dvh;background:#1c0408;overflow:hidden;cursor:pointer;touch-action:manipulation;outline:none}
+#opening{position:fixed;inset:0;z-index:100;height:100dvh;background:#1c0408;transition:background-color .35s;overflow:hidden;cursor:pointer;touch-action:manipulation;outline:none}
+#opening.open{background-color:transparent}
 .curtain{position:absolute;top:0;bottom:0;width:50.5%;background:#4a0a14 url(assets/curtain.jpg) repeat-x;background-size:auto 100%;transition:transform 3s cubic-bezier(.4,0,.35,1);will-change:transform;z-index:2}
 .curtain.l{left:0;background-position:left center;transform-origin:left bottom;box-shadow:inset -28px 0 44px rgba(0,0,0,.5)}
 .curtain.r{right:0;background-position:right center;transform-origin:right bottom;box-shadow:inset 28px 0 44px rgba(0,0,0,.5)}
@@ -81,8 +82,6 @@ section{position:relative;z-index:1;padding:80px 24px;text-align:center}
 /* ===== 2. MAIN ===== */
 #main{height:100vh;height:var(--mh,100svh);padding:0;background:#1a1a1a url('assets/main.jpg') center top/auto 100% no-repeat}
 
-#main{transition:opacity 1.8s ease-out}
-body.pre #main{opacity:0}
 /* ===== 3. WE ARE GETTING MARRIED ===== */
 #intro{padding-top:108px;overflow:hidden;background:url(assets/sunlight.jpg) center top/100% auto repeat-y,#e0ddd4}
 #intro>*{position:relative;z-index:1}
@@ -185,7 +184,7 @@ body.pre #main{opacity:0}
 .colon{height:80px;line-height:76px;font-size:28px;color:var(--main)}
 .cd-msg{margin-top:40px;font-size:14px;line-height:2;font-weight:700;white-space:nowrap}
 .cd-msg b{color:var(--main);font-weight:800}
-.cd-msg .num{display:inline-block;min-width:56px;height:52px;line-height:46px;font-size:16px;vertical-align:middle;margin-top:-12px;margin-bottom:-12px;position:relative;top:-8px;text-align:center;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B99A6A' d='M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z'/%3E%3C/svg%3E") center/contain no-repeat;color:var(--main);font-weight:800;padding:0 2px;margin-left:2px;margin-right:2px}
+.cd-msg .num{display:inline-block;min-width:56px;height:52px;line-height:46px;font-size:16px;vertical-align:middle;margin-top:-12px;margin-bottom:-12px;position:relative;top:-8px;box-sizing:border-box;padding-top:7px;text-align:center;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B99A6A' d='M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z'/%3E%3C/svg%3E") center/contain no-repeat;color:var(--main);font-weight:800;padding:0 2px;margin-left:2px;margin-right:2px}
 
 /* ===== 6. LOCATION ===== */
 #location{padding-top:104px;background:url(assets/sunlight.jpg) center 500px/100% auto repeat-y,#e0ddd4}
@@ -579,6 +578,9 @@ const CFG=window.INVITE_CONFIG||{};
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),2000)}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
+/* ---- 메인 사진을 오프닝 뒤에서 미리 받아 디코딩해 두어, 커튼이 열리는 즉시 보이게 ---- */
+(function(){const i=new Image();i.src='assets/main.jpg';if(i.decode)i.decode().catch(()=>{})})();
+
 /* ---- 메인 사진 높이 고정: 카톡 등 인앱브라우저에서 스크롤 중 주소창/하단바가 접혀도 사진이 커졌다 작아지지 않게 ---- */
 (function(){const r=document.documentElement;let w=innerWidth;const set=()=>r.style.setProperty('--mh',innerHeight+'px');set();window.__setMH=set;
   addEventListener('resize',()=>{if(innerWidth!==w){w=innerWidth;set()}else if(!matchMedia('(pointer:coarse)').matches)set()});
@@ -778,7 +780,9 @@ document.addEventListener('click',async e=>{const c=e.target.closest('.cp');if(c
 
 /* ---- 포토 공유 / 링크 / 카카오 ---- */
 const PHOTO=CFG.GOOGLE_PHOTOS_URL||'';
-$('#photoBtn').onclick=e=>{if(!PHOTO){e.preventDefault();toast('공유 앨범 링크가 곧 안내됩니다')}else{$('#photoBtn').href=PHOTO;$('#photoBtn').target='_blank';$('#photoBtn').rel='noopener'}};
+const PHOTO_END=CFG.PHOTO_DEADLINE?Date.parse(CFG.PHOTO_DEADLINE):0; // 이 시각 이후에는 청첩장의 업로드 버튼이 닫힘(config.js 의 PHOTO_DEADLINE)
+(function(){const a=$('#photoBtn');if(PHOTO){a.href=PHOTO;a.target='_blank';a.rel='noopener noreferrer'}
+  a.addEventListener('click',e=>{if(!PHOTO){e.preventDefault();toast('업로드 링크가 곧 안내됩니다')}else if(PHOTO_END&&Date.now()>PHOTO_END){e.preventDefault();toast('사진 업로드 기간이 마감되었습니다')}})})();
 $('#linkBtn').onclick=async()=>{await copy(location.origin+location.pathname);toast('링크가 복사되었습니다')};
 $('#kakaoBtn').onclick=()=>{
   if(!window.Kakao||!CFG.KAKAO_JS_KEY){toast('카카오 JavaScript 키 설정이 필요합니다');return}
