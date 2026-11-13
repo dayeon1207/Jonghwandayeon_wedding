@@ -152,7 +152,7 @@ section{position:relative;z-index:1;padding:80px 24px;text-align:center}
 #v-close::before,#v-close::after{content:"";position:absolute;left:8px;right:8px;top:50%;height:1px;background:#fff;transform:rotate(45deg)}
 #v-close::after{transform:rotate(-45deg)}
 #v-stage{flex:1;width:100%;display:flex;align-items:center;justify-content:center;position:relative;min-height:0;padding:48px 8px 8px}
-#v-img{width:min(calc(100vw - 16px),480px);max-width:100%;aspect-ratio:2/3;max-height:calc(100svh - 150px);object-fit:contain;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;-webkit-touch-callout:none;pointer-events:none;touch-action:pan-y;transition:opacity .25s}
+#v-img{width:min(calc(100vw - 16px),480px);max-width:100%;height:auto;max-height:calc(100svh - 150px);object-fit:contain;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;-webkit-touch-callout:none;pointer-events:none;touch-action:pan-y;transition:opacity .25s}
 #viewer,#gallery{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .v-nav{position:absolute;top:50%;width:48px;height:48px;margin-top:-24px;color:#fff;font-size:28px;font-weight:200;opacity:.8}
 #v-prev{left:0}#v-next{right:0}
@@ -624,7 +624,7 @@ function buildGallery(){
       const ori='p';
       d.className='lace '+ori+(GAL.length?'':' empty');d.style.setProperty('--rot',ROT[k]+'deg');
       d.innerHTML='<div class="ph">'+(GAL.length?'<img loading="lazy" draggable="false" alt="갤러리 사진 '+(i+1)+'" src="'+esc(GAL[i].grid)+'">':'')+'</div><img class="fr" alt="" src="'+frame(ori)+'">';
-      if(GAL.length){const im=d.querySelector('.ph img');im.onload=()=>{d.classList.remove('l');d.classList.add('p')};d.onclick=()=>openV(i)}
+      if(GAL.length){const im=d.querySelector('.ph img'),fr=d.querySelector('.fr');im.onload=()=>{const o=im.naturalWidth>im.naturalHeight?'l':'p';d.classList.remove('p','l');d.classList.add(o);fr.src=frame(o)};d.onclick=()=>openV(i)}
       page.appendChild(d);
     }
     pg.appendChild(page);
