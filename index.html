@@ -645,7 +645,7 @@ GAL=(CFG.GALLERY||[]).filter(Boolean).map(mkItem);buildGallery();
 (function(){ // assets/gallery/1.jpg, 2.jpg … 순서대로 자동 인식 (오프닝이 끝난 뒤 불러와 첫 화면 속도를 우선)
   if(GAL.length)return;
   setTimeout(probe,4500);function probe(){
-  const N=45,found=[];let left=N;
+  const N=24,found=[];let left=N;
   const done=()=>{if(--left)return;found.sort((a,b)=>a-b);if(found.length){GAL=found.map(i=>mkItem('assets/gallery/'+i+'.jpg'));buildGallery()}};
   for(let i=1;i<=N;i++){const im=new Image();im.onload=()=>{found.push(i);done()};im.onerror=done;im.src='assets/gallery/'+i+'.jpg'}
 }
@@ -787,7 +787,7 @@ $('#linkBtn').onclick=async()=>{await copy(location.origin+location.pathname);to
 $('#kakaoBtn').onclick=()=>{
   if(!window.Kakao||!CFG.KAKAO_JS_KEY){toast('카카오 JavaScript 키 설정이 필요합니다');return}
   if(!Kakao.isInitialized())Kakao.init(CFG.KAKAO_JS_KEY);
-  const base=location.origin+'/',url=base;
+  const base=new URL('.',location.href).href,url=base;
   Kakao.Share.sendDefault({objectType:'feed',
     content:{title:'박종환 ♥ 정다연 결혼합니다',description:'2027.02.20 토 오후 4:20\n광명 아이벡스컨벤션',imageUrl:base+'assets/share.jpg',imageWidth:800,imageHeight:1200,link:{mobileWebUrl:url,webUrl:url}},
     buttons:[{title:'청첩장 보기',link:{mobileWebUrl:url,webUrl:url}},{title:'게스트스냅',link:{mobileWebUrl:PHOTO||url,webUrl:PHOTO||url}}]});
