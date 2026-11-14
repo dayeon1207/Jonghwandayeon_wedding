@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#faf6ec">
+<title>참석 여부 관리 · 박종환 ♥ 정다연</title>
+<style>
+:root{
+  --ivory:#faf6ec; --ivory2:#f3ecdc; --burgundy:#5b0d1d; --burgundy2:#7a1b2c;
+  --gold:#B99A6A; --gold-l:#e6d7bb; --ink:#3a2f2a; --muted:#8b7f74; --line:#e4d9c4;
+  --ok:#3f6b4f; --warn:#a8541f;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--ivory); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+  -webkit-text-size-adjust:100%; line-height:1.45;
+  padding:0 0 calc(28px + env(safe-area-inset-bottom));
+}
+h1,h2,h3{font-family:"AppleMyungjo","Nanum Myeongjo",-apple-system,"Apple SD Gothic Neo",serif;font-weight:400;margin:0}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:480px;margin:0 auto;padding:0 16px}
+
+/* header */
+.top{
+  background:var(--burgundy); color:#f7ecdd; padding:calc(14px + env(safe-area-inset-top)) 0 14px;
+  text-align:center; border-bottom:3px solid var(--gold);
+}
+.top .kicker{font-size:11px;letter-spacing:.22em;color:var(--gold);margin-bottom:4px}
+.top h1{font-size:17px;letter-spacing:.04em}
+.top .sub{font-size:11px;color:#d9c3b8;margin-top:5px;letter-spacing:.06em}
+.acct{
+  display:flex;align-items:center;justify-content:center;gap:8px;margin-top:9px;font-size:11px;color:#e5d5c9;
+}
+.acct .mail{max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acct button{
+  background:transparent;border:1px solid rgba(247,236,221,.45);color:#f7ecdd;
+  border-radius:999px;padding:4px 10px;font-size:11px;
+}
+
+/* generic card */
+.card{
+  background:#fffdf7;border:1px solid var(--line);border-radius:16px;
+  box-shadow:0 1px 2px rgba(91,13,29,.04);
+  padding:16px;margin-top:14px;
+}
+
+/* login */
+.login{ text-align:center; padding:34px 22px 30px }
+.login .mark{
+  width:56px;height:56px;margin:0 auto 14px;border-radius:50%;
+  border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;
+  color:var(--burgundy);font-size:22px;letter-spacing:0;background:var(--ivory2);
+}
+.login h2{font-size:19px;color:var(--burgundy);letter-spacing:.02em}
+.login p{font-size:13px;color:var(--muted);margin:10px 0 22px;line-height:1.7}
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  width:100%;border:0;border-radius:12px;padding:14px 16px;
+  background:var(--burgundy);color:#fff;font-size:15px;font-weight:600;letter-spacing:.01em;
+}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;border:1px solid var(--burgundy);color:var(--burgundy);font-weight:500}
+.btn.small{width:auto;padding:9px 14px;font-size:12.5px;border-radius:10px;gap:6px}
+.btn[disabled]{opacity:.55}
+.notice{font-size:12px;color:var(--muted);margin-top:14px;line-height:1.6}
+.msg{margin-top:12px;font-size:12.5px;min-height:18px;color:var(--warn)}
+.msg.ok{color:var(--ok)}
+
+/* summary hero */
+.hero{
+  background:linear-gradient(160deg,#5b0d1d,#7a1b2c 70%,#8a2233);
+  color:#fbeee2;border:0;position:relative;overflow:hidden;
+}
+.hero::after{content:"";position:absolute;inset:6px;border:1px solid rgba(185,154,106,.45);border-radius:12px;pointer-events:none}
+.hero .lbl{font-size:11px;letter-spacing:.18em;color:var(--gold-l)}
+.hero .total{display:flex;align-items:baseline;gap:5px;margin-top:2px}
+.hero .total b{font-size:40px;font-weight:700;line-height:1.05;font-family:Georgia,"Times New Roman",serif}
+.hero .total span{font-size:13px;color:#e8d1c4}
+.hero .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px;position:relative;z-index:1}
+.hero .grid div{background:rgba(255,255,255,.08);border-radius:10px;padding:9px 2px;text-align:center}
+.hero .grid b{display:block;font-size:22px;font-weight:700;line-height:1.2;font-family:Georgia,"Times New Roman",serif}
+.hero .grid span{display:block;font-size:9.5px;color:#e8d1c4;margin-top:4px;letter-spacing:0;white-space:nowrap}
+.hero .grid span i{font-style:normal;color:#f3dcc9}
+
+/* side cards */
+.sides{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.side{background:#fffdf7;border:1px solid var(--line);border-radius:16px;padding:13px 13px 11px;position:relative}
+.side h2{font-size:13.5px;color:var(--burgundy);letter-spacing:.06em;display:flex;align-items:center;gap:6px}
+.side h2::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.side .main{margin-top:8px;display:flex;align-items:baseline;gap:3px}
+.side .main b{font-size:31px;font-weight:700;color:var(--burgundy);font-family:Georgia,"Times New Roman",serif;line-height:1}
+.side .main em{font-style:normal;font-size:12px;color:var(--muted)}
+.side .main .cnt{font-size:10.5px;color:var(--muted);margin-left:auto}
+.side ul{list-style:none;margin:9px 0 0;padding:9px 0 0;border-top:1px dashed var(--line)}
+.side li{display:flex;justify-content:space-between;font-size:12px;color:var(--ink);padding:2px 0}
+.side li b{font-weight:700}
+.side li.dim{color:var(--muted)}
+.side li.dim b{color:var(--muted);font-weight:600}
+
+/* warning */
+.warn{
+  margin-top:12px;background:#fff4ec;border:1px solid #ecc9ae;border-radius:12px;
+  padding:11px 13px;font-size:12px;color:#8a3d12;line-height:1.6;
+}
+.warn b{display:block;font-size:12.5px;margin-bottom:3px}
+
+/* controls */
+.controls{margin-top:16px}
+.tabs{display:flex;gap:6px;background:var(--ivory2);border:1px solid var(--line);border-radius:12px;padding:4px}
+.tabs button{
+  flex:1;border:0;background:transparent;border-radius:9px;padding:9px 0;font-size:13px;color:var(--muted);
+}
+.tabs button[aria-selected="true"]{background:#fff;color:var(--burgundy);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.chips{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+.chips button{
+  border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;
+  padding:6px 12px;font-size:12px;
+}
+.chips button[aria-pressed="true"]{background:var(--burgundy);border-color:var(--burgundy);color:#fff;font-weight:600}
+.search{margin-top:9px;position:relative}
+.search input{
+  width:100%;border:1px solid var(--line);border-radius:11px;background:#fff;
+  padding:11px 12px 11px 34px;font-size:14px;color:var(--ink);outline:none;
+  -webkit-appearance:none;appearance:none;
+}
+.search input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(185,154,106,.16)}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;fill:none;stroke:var(--muted);stroke-width:2}
+.tools{display:flex;align-items:center;gap:8px;margin-top:10px}
+.tools .count{font-size:12px;color:var(--muted);flex:1}
+.tools .count b{color:var(--burgundy);font-weight:700}
+.csv{
+  display:inline-flex;align-items:center;gap:6px;border:1px solid var(--gold);color:#7a5f36;
+  background:#fffdf7;border-radius:10px;padding:9px 12px;font-size:12.5px;font-weight:600;
+}
+
+/* list */
+.list{margin-top:10px;display:flex;flex-direction:column;gap:9px}
+.ent{
+  background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:13px 13px 11px;
+}
+.ent .r1{display:flex;align-items:flex-start;gap:8px}
+.ent .nm{font-size:16px;font-weight:700;color:var(--ink);letter-spacing:.01em}
+.ent .side-tag{
+  font-size:10.5px;color:#7a5f36;background:var(--ivory2);border:1px solid var(--gold-l);
+  border-radius:999px;padding:2px 7px;white-space:nowrap;margin-top:2px;
+}
+.ent .del{
+  margin-left:auto;border:1px solid var(--line);background:#fff;color:var(--muted);
+  border-radius:8px;padding:5px 9px;font-size:11.5px;flex:none;
+}
+.ent .del:active{color:var(--burgundy);border-color:var(--burgundy)}
+.ent .badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.bdg{font-size:11.5px;border-radius:7px;padding:3px 8px;border:1px solid var(--line);background:#fff;color:var(--ink)}
+.bdg.attend{background:#eef4ee;border-color:#c8dcc9;color:var(--ok);font-weight:700}
+.bdg.absent{background:#f6eeee;border-color:#e3cccc;color:#8b3535}
+.bdg.pending{background:#f6f2e8;border-color:#e6dcc5;color:#7a6533}
+.bdg.meal{background:#fbf4e6;border-color:#e9d9b6;color:#7a5f36}
+.bdg.mismatch{background:#fff1e6;border-color:#ecc9ae;color:#a8541f;font-weight:700}
+.ent .talk{
+  margin-top:9px;font-size:12.5px;color:#5d5148;background:#fbf7ee;border-left:2px solid var(--gold-l);
+  border-radius:0 8px 8px 0;padding:8px 10px;white-space:pre-wrap;word-break:break-word;
+}
+.ent .date{font-size:10.5px;color:var(--muted);margin-top:8px}
+.empty{
+  text-align:center;color:var(--muted);font-size:13px;padding:38px 10px;background:#fffdf7;
+  border:1px dashed var(--line);border-radius:14px;
+}
+.foot{text-align:center;font-size:10.5px;color:#b5a894;margin-top:22px;letter-spacing:.04em}
+.status{font-size:11px;color:var(--muted);text-align:center;margin-top:8px}
+.status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#b9ad9a;margin-right:5px;vertical-align:1px}
+.status.live .dot{background:#4c8a5c}
+[hidden]{display:none !important}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="kicker">WEDDING RSVP</div>
+  <h1>박종환 ♥ 정다연</h1>
+  <div class="sub">2027. 02. 20 (토) 16:20 · 아이벡스컨벤션</div>
+  <div class="acct" id="acct" hidden>
+    <span class="mail" id="acctMail"></span>
+    <button type="button" id="btnSwitch">계정 전환</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 1) 로그인 -->
+  <section id="viewLogin" hidden>
+    <div class="card login">
+      <div class="mark">♥</div>
+      <h2>관리자 전용</h2>
+      <p>신랑·신부만 볼 수 있는 참석 여부 확인 화면이에요.<br>청첩장을 보내신 하객분들은 로그인 없이<br>그대로 참석 여부를 보내실 수 있습니다.</p>
+      <button class="btn" type="button" id="btnLogin">
+        <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#fff" d="M45.1 24.5c0-1.6-.1-2.8-.4-4H24v7.3h12c-.2 1.9-1.5 4.8-4.4 6.8l6.7 5.2c4-3.7 6.8-9.2 6.8-15.3z"/><path fill="#fff" opacity=".85" d="M24 46c6 0 11-2 14.3-5.4l-6.7-5.2c-1.9 1.3-4.4 2.2-7.6 2.2-5.8 0-10.7-3.8-12.5-9.1l-7 5.4C7.8 41 15.3 46 24 46z"/><path fill="#fff" opacity=".7" d="M11.5 28.5c-.5-1.4-.8-2.9-.8-4.5s.3-3.1.8-4.5l-7-5.4C2.9 17.1 2 20.4 2 24s.9 6.9 2.5 9.9l7-5.4z"/><path fill="#fff" opacity=".9" d="M24 10.7c3.3 0 5.5 1.4 6.8 2.6l5.9-5.8C33 4.1 28 2 24 2 15.3 2 7.8 7 4.5 14.1l7 5.4c1.8-5.3 6.7-9.1 12.5-9.1z"/></svg>
+        Google 계정으로 로그인
+      </button>
+      <div class="msg" id="loginMsg" role="status"></div>
+      <div class="notice">관리자로 등록된 계정으로만 명단이 열립니다.</div>
+    </div>
+  </section>
+
+  <!-- 2) 권한 없음 -->
+  <section id="viewDenied" hidden>
+    <div class="card login">
+      <div class="mark">!</div>
+      <h2>이 계정은 권한이 없어요</h2>
+      <p id="deniedWho"></p>
+      <p style="margin-bottom:18px">신랑·신부 관리자 계정으로 다시 로그인해 주세요.</p>
+      <button class="btn" type="button" id="btnRetry">다른 계정으로 로그인</button>
+      <button class="btn ghost" type="button" id="btnOut" style="margin-top:8px">로그아웃</button>
+      <div class="msg" id="deniedMsg" role="status"></div>
+    </div>
+  </section>
+
+  <!-- 3) 대시보드 -->
+  <section id="viewDash" hidden>
+    <div class="card hero">
+      <div class="lbl">총 응답</div>
+      <div class="total"><b id="sTotal">0</b><span>건</span></div>
+      <div class="grid">
+        <div><b id="sAttend">0</b><span>참석 인원</span></div>
+        <div><b id="sMeal">0</b><span>식사 인원</span></div>
+        <div><b id="sAbsent">0</b><span>불참 <i id="sAbsentP">0</i>명</span></div>
+        <div><b id="sPending">0</b><span>미정 <i id="sPendingP">0</i>명</span></div>
+      </div>
+    </div>
+
+    <div class="sides">
+      <section class="side" id="cardGroom">
+        <h2>신랑측</h2>
+        <div class="main"><b id="gAttend">0</b><em>명 참석</em><span class="cnt" id="gAttendN">0건</span></div>
+        <ul>
+          <li><span>식사</span><b><span id="gMeal">0</span>명</b></li>
+          <li class="dim"><span>불참</span><b><span id="gAbsent">0</span>건</b></li>
+          <li class="dim"><span>미정</span><b><span id="gPending">0</span>건</b></li>
+        </ul>
+      </section>
+      <section class="side" id="cardBride">
+        <h2>신부측</h2>
+        <div class="main"><b id="bAttend">0</b><em>명 참석</em><span class="cnt" id="bAttendN">0건</span></div>
+        <ul>
+          <li><span>식사</span><b><span id="bMeal">0</span>명</b></li>
+          <li class="dim"><span>불참</span><b><span id="bAbsent">0</span>건</b></li>
+          <li class="dim"><span>미정</span><b><span id="bPending">0</span>건</b></li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="warn" id="warnBox" hidden></div>
+
+    <div class="controls">
+      <div class="tabs" role="tablist" aria-label="구분">
+        <button type="button" role="tab" data-side="전체" aria-selected="true">전체</button>
+        <button type="button" role="tab" data-side="신랑측" aria-selected="false">신랑측</button>
+        <button type="button" role="tab" data-side="신부측" aria-selected="false">신부측</button>
+      </div>
+      <div class="chips" id="chips" aria-label="참석 여부">
+        <button type="button" data-attend="전체" aria-pressed="true">전체</button>
+        <button type="button" data-attend="참석" aria-pressed="false">참석</button>
+        <button type="button" data-attend="불참" aria-pressed="false">불참</button>
+        <button type="button" data-attend="미정" aria-pressed="false">미정</button>
+      </div>
+      <div class="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21"/></svg>
+        <input type="search" id="q" placeholder="성함 또는 말씀으로 검색" autocomplete="off" enterkeyhint="search">
+      </div>
+      <div class="tools">
+        <div class="count"><b id="shownN">0</b>건 표시 중</div>
+        <button class="csv" type="button" id="btnCsv">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
+          엑셀(CSV)
+        </button>
+      </div>
+    </div>
+
+    <div class="list" id="list"></div>
+    <div class="status" id="status"><span class="dot"></span><span id="statusTxt">연결 중…</span></div>
+    <div class="foot">박종환 ♥ 정다연 · 관리자 화면</div>
+  </section>
+
+</main>
+
+<script src="config.js"></script>
+<script type="module">
+const CFG = window.INVITE_CONFIG || {};
+const FB = CFG.FIREBASE || {};
+const ADMIN_EMAIL = 'ridda1207@gmail.com';
+const $ = s => document.querySelector(s);
+const views = {login: $('#viewLogin'), denied: $('#viewDenied'), dash: $('#viewDash')};
+
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2, '0');
+function fmtDate(v){
+  let d = null;
+  if (v && typeof v.toDate === 'function') d = v.toDate();
+  else if (v instanceof Date) d = v;
+  else if (typeof v === 'number') d = new Date(v);
+  else if (typeof v === 'string') { const t = new Date(v); if (!isNaN(t)) d = t; }
+  if (!d) return '방금 전';
+  const diff = Date.now() - d.getTime();
+  if (diff >= 0 && diff < 60000) return '방금 전';
+  return `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+function show(name){
+  Object.entries(views).forEach(([k, el]) => { el.hidden = (k !== name); });
+  $('#acct').hidden = (name !== 'dash');
+}
+
+/* ---------- config check ---------- */
+if (!(FB.apiKey && !String(FB.apiKey).startsWith('YOUR_'))) {
+  show('login');
+  $('#btnLogin').disabled = true;
+  $('#loginMsg').textContent = 'Firebase 설정(config.js)을 찾지 못했어요.';
+} else {
+  start();
+}
+
+async function start(){
+  const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+  const {
+    getAuth, onAuthStateChanged, getRedirectResult, signInWithPopup, signInWithRedirect,
+    GoogleAuthProvider, signOut, setPersistence, browserLocalPersistence
+  } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
+  const { getFirestore, collection, onSnapshot, doc, deleteDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+
+  const app = initializeApp(FB);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  try { await setPersistence(auth, browserLocalPersistence); } catch(e) {}
+
+  let items = [];
+  let unsub = null;
+  let fSide = '전체', fAttend = '전체', q = '';
+
+  const btnLogin = $('#btnLogin');
+  const loginMsg = $('#loginMsg');
+
+  function authErrorText(err){
+    const c = (err && err.code) || '';
+    if (c === 'auth/unauthorized-domain') return '이 주소는 Firebase 승인 도메인에 등록되어 있지 않아요.';
+    if (c === 'auth/operation-not-allowed') return 'Firebase에서 Google 로그인이 아직 켜져 있지 않아요.';
+    if (c === 'auth/popup-blocked') return '팝업이 차단되어 다른 방식으로 이동합니다…';
+    if (c === 'auth/popup-closed-by-user' || c === 'auth/cancelled-popup-request') return '로그인이 취소되었어요.';
+    if (c === 'auth/network-request-failed') return '네트워크 연결을 확인해 주세요.';
+    return '로그인하지 못했어요. 잠시 후 다시 시도해 주세요.' + (c ? ` (${c})` : '');
+  }
+
+  async function doSignIn(){
+    loginMsg.className = 'msg';
+    loginMsg.textContent = '';
+    btnLogin.disabled = true;
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (err) {
+      const c = (err && err.code) || '';
+      if (c === 'auth/popup-blocked' || c === 'auth/operation-not-supported-in-this-environment') {
+        loginMsg.textContent = authErrorText(err);
+        try { await signInWithRedirect(auth, provider); return; } catch (e2) { loginMsg.textContent = authErrorText(e2); }
+      } else {
+        loginMsg.textContent = authErrorText(err);
+      }
+    } finally {
+      btnLogin.disabled = false;
+    }
+  }
+
+  btnLogin.addEventListener('click', doSignIn);
+  $('#btnRetry').addEventListener('click', async () => {
+    try { await signOut(auth); } catch(e) {}
+    show('login');
+    await doSignIn();
+  });
+  $('#btnOut').addEventListener('click', async () => {
+    try { await signOut(auth); } catch(e) {}
+    show('login');
+  });
+  $('#btnSwitch').addEventListener('click', async () => {
+    if (!confirm('로그아웃하고 다른 계정으로 로그인할까요?')) return;
+    try { await signOut(auth); } catch(e) {}
+    show('login');
+  });
+
+  /* ---------- data / render ---------- */
+  function calc(){
+    const base = {n:0, greet:0, greetN:0, meal:0, absent:0, absentP:0, pending:0, pendingP:0};
+    const sides = {'신랑측': {...base}, '신부측': {...base}};
+    for (const r of items){
+      const c = Math.max(1, Number(r.count) || 1);
+      const s = (r.side === '신부측') ? sides['신부측'] : sides['신랑측'];
+      base.n++; s.n++;
+      if (r.attend === '참석'){ base.greet += c; base.greetN++; s.greet += c; s.greetN++; if (r.meal === '식사함'){ base.meal += c; s.meal += c; } }
+      else if (r.attend === '불참'){ base.absent++; base.absentP += c; s.absent++; s.absentP += c; }
+      else { base.pending++; base.pendingP += c; s.pending++; s.pendingP += c; }
+    }
+    return {total: base, groom: sides['신랑측'], bride: sides['신부측']};
+  }
+
+  function renderSummary(){
+    const {total: t, groom: g, bride: b} = calc();
+    $('#sTotal').textContent = t.n;
+    $('#sAttend').textContent = t.greet;
+    $('#sMeal').textContent = t.meal;
+    $('#sAbsent').textContent = t.absent;
+    $('#sAbsentP').textContent = t.absentP;
+    $('#sPending').textContent = t.pending;
+    $('#sPendingP').textContent = t.pendingP;
+    $('#gAttend').textContent = g.greet; $('#gAttendN').textContent = g.greetN + '건';
+    $('#gMeal').textContent = g.meal; $('#gAbsent').textContent = g.absent; $('#gPending').textContent = g.pending;
+    $('#bAttend').textContent = b.greet; $('#bAttendN').textContent = b.greetN + '건';
+    $('#bMeal').textContent = b.meal; $('#bAbsent').textContent = b.absent; $('#bPending').textContent = b.pending;
+
+    const bad = items.filter(r => r.attend !== '참석' && r.meal === '식사함');
+    const warn = $('#warnBox');
+    if (bad.length){
+      warn.hidden = false;
+      warn.innerHTML = '<b>확인이 필요한 응답 ' + bad.length + '건</b>'
+        + '참석하지 않는데 식사 “식사함”으로 들어온 응답이에요. 식사 인원 합계에는 넣지 않았습니다.<br>'
+        + bad.map(r => esc(r.name)).join(', ');
+    } else {
+      warn.hidden = true;
+    }
+  }
+
+  function visible(){
+    const kw = q.trim().toLowerCase();
+    return items.filter(r => {
+      if (fSide !== '전체' && r.side !== fSide) return false;
+      if (fAttend !== '전체' && r.attend !== fAttend) return false;
+      if (kw){
+        const hay = (String(r.name||'') + ' ' + String(r.message||'')).toLowerCase();
+        if (!hay.includes(kw)) return false;
+      }
+      return true;
+    });
+  }
+
+  function attendClass(a){ return a === '참석' ? 'attend' : a === '불참' ? 'absent' : 'pending'; }
+
+  function renderList(){
+    const rows = visible();
+    $('#shownN').textContent = rows.length;
+    const list = $('#list');
+    if (!rows.length){
+      list.innerHTML = '<div class="empty">' + (items.length ? '조건에 맞는 응답이 없어요.' : '아직 도착한 참석 여부가 없어요.') + '</div>';
+      return;
+    }
+    list.innerHTML = rows.map(r => {
+      const mismatch = (r.attend !== '참석' && r.meal === '식사함');
+      const c = Math.max(1, Number(r.count) || 1);
+      const attend = r.attend || '미정';
+      return '<article class="ent">'
+        + '<div class="r1">'
+        +   '<div class="nm">' + esc(r.name || '(이름 없음)') + '</div>'
+        +   '<div class="side-tag">' + esc(r.side || '신랑측') + '</div>'
+        +   '<button class="del" type="button" data-del="' + esc(r.id) + '" data-name="' + esc(r.name || '') + '">삭제</button>'
+        + '</div>'
+        + '<div class="badges">'
+        +   '<span class="bdg ' + attendClass(attend) + '">' + esc(attend) + '</span>'
+        +   '<span class="bdg">' + c + '명</span>'
+        +   '<span class="bdg meal">' + esc(r.meal || '식사안함') + '</span>'
+        +   (mismatch ? '<span class="bdg mismatch">식사 인원 제외</span>' : '')
+        + '</div>'
+        + (r.message ? '<div class="talk">' + esc(r.message) + '</div>' : '')
+        + '<div class="date">' + fmtDate(r.createdAt) + '</div>'
+        + '</article>';
+    }).join('');
+  }
+
+  function renderAll(){ renderSummary(); renderList(); }
+
+  $('#chips').addEventListener('click', e => {
+    const b = e.target.closest('button[data-attend]'); if (!b) return;
+    fAttend = b.dataset.attend;
+    [...$('#chips').children].forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    renderList();
+  });
+  document.querySelector('.tabs').addEventListener('click', e => {
+    const b = e.target.closest('button[data-side]'); if (!b) return;
+    fSide = b.dataset.side;
+    [...document.querySelector('.tabs').children].forEach(x => x.setAttribute('aria-selected', String(x === b)));
+    renderList();
+  });
+  let qTimer = null;
+  $('#q').addEventListener('input', e => {
+    clearTimeout(qTimer);
+    qTimer = setTimeout(() => { q = e.target.value || ''; renderList(); }, 120);
+  });
+
+  /* ---------- delete ---------- */
+  $('#list').addEventListener('click', async e => {
+    const b = e.target.closest('button[data-del]'); if (!b) return;
+    const nm = b.dataset.name ? `“${b.dataset.name}” 님의 ` : '이 ';
+    if (!confirm(nm + '참석 여부 응답을 삭제할까요?\n삭제하면 되돌릴 수 없어요.')) return;
+    b.disabled = true; b.textContent = '삭제 중';
+    try {
+      await deleteDoc(doc(db, 'rsvp', b.dataset.del));
+    } catch (err) {
+      console.error(err);
+      b.disabled = false; b.textContent = '삭제';
+      alert('삭제하지 못했어요. 잠시 후 다시 시도해 주세요.');
+    }
+  });
+
+  /* ---------- CSV ---------- */
+  $('#btnCsv').addEventListener('click', () => {
+    const rows = visible();
+    if (!rows.length){ alert('내보낼 응답이 없어요.'); return; }
+    const cell = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+    const head = ['성함','구분','참석여부','인원','식사여부','전하실 말씀','작성일시'];
+    const body = rows.map(r => {
+      const d = (() => { try { const dd = r.createdAt && r.createdAt.toDate ? r.createdAt.toDate() : (r.createdAt ? new Date(r.createdAt) : null); return dd && !isNaN(dd) ? `${dd.getFullYear()}-${pad(dd.getMonth()+1)}-${pad(dd.getDate())} ${pad(dd.getHours())}:${pad(dd.getMinutes())}` : ''; } catch(e){ return ''; } })();
+      return [r.name || '', r.side || '', r.attend || '', String(Math.max(1, Number(r.count) || 1)), r.meal || '', r.message || '', d].map(cell).join(',');
+    });
+    const csv = '\uFEFF' + [head.map(cell).join(','), ...body].join('\r\n');
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const now = new Date();
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `참석여부_${fSide === '전체' ? '전체' : fSide}_${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}.csv`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  });
+
+  /* ---------- auth state ---------- */
+  function startSnapshot(){
+    if (unsub) return;
+    $('#statusTxt').textContent = '연결 중…';
+    $('#status').classList.remove('live');
+    unsub = onSnapshot(collection(db, 'rsvp'), snap => {
+      items = snap.docs.map(d => ({id: d.id, ...d.data()}));
+      items.sort((a, b) => {
+        const ta = a.createdAt && a.createdAt.toDate ? a.createdAt.toDate().getTime() : (a.createdAt ? new Date(a.createdAt).getTime() || 0 : 0);
+        const tb = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate().getTime() : (b.createdAt ? new Date(b.createdAt).getTime() || 0 : 0);
+        return tb - ta;
+      });
+      $('#status').classList.add('live');
+      $('#statusTxt').textContent = '실시간 연결됨 · ' + items.length + '건';
+      renderAll();
+    }, err => {
+      console.error(err);
+      $('#status').classList.remove('live');
+      $('#statusTxt').textContent = (err && err.code === 'permission-denied')
+        ? '명단을 읽을 권한이 없어요 (보안 규칙 확인 필요)'
+        : '데이터를 불러오지 못했어요';
+    });
+  }
+  function stopSnapshot(){ if (unsub){ unsub(); unsub = null; } items = []; }
+
+  function route(user){
+    if (!user){
+      stopSnapshot();
+      show('login');
+      return;
+    }
+    $('#acctMail').textContent = user.email || '';
+    const ok = (user.email || '').toLowerCase() === ADMIN_EMAIL
+      && (user.emailVerified !== false);
+    if (!ok){
+      stopSnapshot();
+      $('#deniedWho').innerHTML = '지금 <b>' + esc(user.email || '알 수 없는 계정') + '</b> 으로 로그인되어 있어요.';
+      show('denied');
+      return;
+    }
+    show('dash');
+    renderAll();
+    startSnapshot();
+  }
+
+  try {
+    const res = await getRedirectResult(auth);
+    if (res && res.user) { /* onAuthStateChanged handles it */ }
+  } catch (err) {
+    console.error(err);
+    loginMsg.textContent = authErrorText(err);
+  }
+
+  onAuthStateChanged(auth, route);
+}
+</script>
+</body>
+</html>

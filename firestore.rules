@@ -8,8 +8,13 @@ service cloud.firestore {
       allow delete: if true;   // 관리자 비밀번호는 화면에서만 확인하는 실수 방지용
     }
     match /rsvp/{id} {
+      // 하객은 로그인 없이 제출(create)만 가능
       allow create: if request.resource.data.name is string && request.resource.data.name.size() <= 20;
-      allow read, update, delete: if false;  // 응답은 Firebase 콘솔에서만 확인
+      // 조회·삭제는 관리자(ridda1207@gmail.com) Google 로그인 시에만
+      allow read, delete: if request.auth != null
+                          && request.auth.token.email in ['ridda1207@gmail.com']
+                          && request.auth.token.email_verified == true;
+      allow update: if false;
     }
   }
 }
