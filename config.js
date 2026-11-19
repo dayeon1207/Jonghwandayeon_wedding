@@ -2,12 +2,12 @@
 window.INVITE_CONFIG = {
   // Firebase 콘솔 > 프로젝트 설정 > 내 앱(웹)에서 복사
   FIREBASE: {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyDfS0TIOko07NRv7SS5pk9BaPFFkcuVhj4",
+    authDomain: "wedding-invitation-64e0b.firebaseapp.com",
+    projectId: "wedding-invitation-64e0b",
+    storageBucket: "wedding-invitation-64e0b.firebasestorage.app",
+    messagingSenderId: "725529009754",
+    appId: "1:725529009754:web:b2f82ae61a2e3f2f8d4263"
   },
   KAKAO_JS_KEY: "",                              // 카카오 JavaScript 키
   GOOGLE_PHOTOS_URL: "https://naver.me/5T0pWYYl",   // 하객 사진 업로드 링크 (Dropbox 파일 요청 등)

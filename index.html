@@ -328,9 +328,9 @@ body.pre .music{opacity:0;pointer-events:none}
 .p-top{display:flex;justify-content:space-between;align-items:center;min-height:22px}
 .p-top em{font-style:normal;font-size:11.5px;color:#34332F;opacity:.6}
 .p .ic a,.p .ic button{width:28px;height:28px;font-size:13px}
-.p-row{display:flex;align-items:center;gap:10px;margin-top:4px}
+.p-row{display:flex;align-items:center;gap:10px;row-gap:6px;margin-top:4px;flex-wrap:wrap}
 .p-row b{font-size:15px;font-weight:700;color:#34332F;white-space:nowrap}
-.acc-no{font-size:14px;letter-spacing:.02em;color:#34332F}
+.acc-no{font-size:14px;letter-spacing:.02em;color:#34332F;white-space:nowrap}
 .acc-bk{font-size:13px;color:#34332F;opacity:.85;white-space:nowrap}
 .cp{margin-left:auto;flex:none;height:30px;padding:0 12px;border-radius:8px;background:#e9e5dc;color:#34332F;font-size:12px;box-shadow:var(--shadow-s)}
 .tbd{margin-top:8px;font-size:13px;opacity:.55}
@@ -373,7 +373,8 @@ body.pre .music{opacity:0;pointer-events:none}
 .snap-cam{display:block;width:62%;max-width:300px;height:auto;margin:24px auto 0}
 .filmstrip{margin:72px -60px 56px;display:flex;justify-content:center;transform:rotate(-5deg)}
 .strip{position:relative;flex:none;padding:30px 0;--pw:min(54vw,260px);box-shadow:0 6px 10px rgba(52,51,47,.3)}
-.track{position:relative;display:flex;will-change:transform;animation:filmrun 18s linear infinite}
+.track{position:relative;display:flex;animation:filmrun 18s linear infinite;animation-play-state:paused}
+.filmstrip.run .track{animation-play-state:running}
 .track::before,.track::after{content:"";position:absolute;left:0;right:0;height:30px;background:url(assets/film_band.png) repeat-x 0 0/calc(var(--pw) + 12px) 30px;z-index:1}
 .track::before{top:-30px}.track::after{bottom:-30px}
 @keyframes filmrun{to{transform:translate3d(calc(-2 * (var(--pw) + 12px)),0,0)}}
@@ -613,6 +614,12 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
 $$('.reveal').forEach(e=>io.observe(e));
 
+/* ---- 필름스트립: 화면에 보일 때만 애니메이션 재생 (스크롤 중 GPU 부담 줄임) ---- */
+(function(){const f=document.querySelector('.filmstrip');if(!f)return;
+  if(!('IntersectionObserver' in window)){f.classList.add('run');return}
+  new IntersectionObserver(es=>es.forEach(e=>f.classList.toggle('run',e.isIntersecting)),{rootMargin:'300px'}).observe(f);
+})();
+
 /* ---- contact fold ---- */
 $('#contactBtn').onclick=function(){const f=$('#contactBox');const o=f.classList.toggle('open');this.setAttribute('aria-expanded',o);this.textContent=o?'닫기':'연락하기'};
 
@@ -621,7 +628,8 @@ $('#contactBtn').onclick=function(){const f=$('#contactBox');const o=f.classList
 let GAL=[];
 const ROT=[-2.5,1.8,-1.2,2.6,-2,1.4,2.2,-1.8,1];
 const frame=o=>'assets/lace_'+(o==='l'?'l':'p')+'.webp';
-const mkItem=u=>({full:u,grid:u,thumb:u});
+// 같은 이름의 작은 썸네일(assets/gallery/thumb/)이 있으면 격자·뷰어 썸네일에 사용 (없으면 원본으로 대체)
+const mkItem=u=>{const t=u.indexOf('/gallery/')>-1?u.replace('/gallery/','/gallery/thumb/'):u;return{full:u,grid:t,thumb:t}};
 const V=$('#viewer'),VI=$('#v-img'),VT=$('#v-thumbs');let vi=0;['#viewer','#gallery'].forEach(q=>{const el=document.querySelector(q);['contextmenu','dragstart'].forEach(t=>el.addEventListener(t,e=>e.preventDefault()))});
 function buildGallery(){
   const pg=$('#gPager'),dots=$('#gDots');pg.innerHTML='';dots.innerHTML='';VT.innerHTML='';
@@ -633,7 +641,9 @@ function buildGallery(){
       const ori=GAL.length?'p':(k%3===1?'l':'p');
       d.className='lace '+ori+(GAL.length?'':' empty');d.style.setProperty('--rot',ROT[k]+'deg');
       d.innerHTML='<div class="ph">'+(GAL.length?'<img loading="lazy" draggable="false" alt="갤러리 사진 '+(i+1)+'" src="'+esc(GAL[i].grid)+'">':'')+'</div><img class="fr" alt="" src="'+frame(ori)+'">';
-      if(GAL.length){const im=d.querySelector('.ph img'),fr=d.querySelector('.fr');im.onload=()=>{const o=im.naturalWidth>im.naturalHeight?'l':'p';d.classList.remove('p','l');d.classList.add(o);fr.src=frame(o)};d.onclick=()=>openV(i)}
+      if(GAL.length){const im=d.querySelector('.ph img'),fr=d.querySelector('.fr');
+        im.onerror=()=>{if(im.getAttribute('src')!==GAL[i].full)im.setAttribute('src',GAL[i].full)};
+        im.onload=()=>{const o=im.naturalWidth>im.naturalHeight?'l':'p';d.classList.remove('p','l');d.classList.add(o);fr.src=frame(o)};d.onclick=()=>openV(i)}
       page.appendChild(d);
     }
     pg.appendChild(page);
@@ -641,7 +651,7 @@ function buildGallery(){
   }
   const setDot=()=>{const k=Math.round(pg.scrollLeft/pg.clientWidth);[...dots.children].forEach((d,j)=>d.classList.toggle('on',j===k))};
   pg.onscroll=setDot;setDot();
-  GAL.forEach((it,k)=>{const t=document.createElement('div');t.className='vt';t.onclick=()=>showV(k);const im=new Image();im.src=it.thumb;im.alt='';im.draggable=false;t.appendChild(im);VT.appendChild(t)});
+  GAL.forEach((it,k)=>{const t=document.createElement('div');t.className='vt';t.onclick=()=>showV(k);const im=new Image();im.onerror=()=>{if(im.getAttribute('src')!==it.full)im.setAttribute('src',it.full)};im.src=it.thumb;im.alt='';im.draggable=false;t.appendChild(im);VT.appendChild(t)});
 }
 function openV(i){V.classList.add('show');showV(i);document.body.style.overflow='hidden'}
 function showV(i){vi=(i+GAL.length)%GAL.length;VI.style.opacity=0;VI.src=GAL[vi].full;VI.onload=()=>VI.style.opacity=1;[...VT.children].forEach((t,k)=>t.classList.toggle('cur',k===vi));VT.children[vi]?.scrollIntoView({inline:'center',block:'nearest'})}
@@ -651,13 +661,25 @@ document.addEventListener('keydown',e=>{if(!V.classList.contains('show'))return;
 (function(){let x=0,y=0;V.addEventListener('touchstart',e=>{x=e.touches[0].clientX;y=e.touches[0].clientY},{passive:true});
 V.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-x,dy=e.changedTouches[0].clientY-y;if(Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)*1.5)showV(vi+(dx<0?1:-1))},{passive:true})})();
 GAL=(CFG.GALLERY||[]).filter(Boolean).map(mkItem);buildGallery();
-(function(){ // assets/gallery/1.jpg, 2.jpg … 순서대로 자동 인식 (오프닝이 끝난 뒤 불러와 첫 화면 속도를 우선)
+(function(){ // assets/gallery/1.jpg, 2.jpg … 순서대로 자동 인식
+  // 파일 존재만 HEAD로 확인한다(본문을 받지 않아 사진 24장을 한꺼번에 내려받느라 스크롤이 끊기지 않음). 오프닝 뒤에 시작.
   if(GAL.length)return;
-  setTimeout(probe,4500);function probe(){
-  const N=45,found=[];let left=N;
-  const done=()=>{if(--left)return;found.sort((a,b)=>a-b);if(found.length){GAL=found.map(i=>mkItem('assets/gallery/'+i+'.jpg'));buildGallery()}};
-  for(let i=1;i<=N;i++){const im=new Image();im.onload=()=>{found.push(i);done()};im.onerror=done;im.src='assets/gallery/'+i+'.jpg'}
-}
+  setTimeout(probe,4500);
+  async function probe(){
+    const found=[];
+    for(let i=1;i<=60;i++){
+      let ok=false;
+      try{const r=await fetch('assets/gallery/'+i+'.jpg',{method:'HEAD',cache:'force-cache'});if(r.status===405||r.status===501){imgProbe();return}ok=r.ok}catch(e){ok=false}
+      if(!ok){if(i===1)imgProbe();break}
+      found.push(i);
+    }
+    if(found.length){GAL=found.map(i=>mkItem('assets/gallery/'+i+'.jpg'));buildGallery()}
+  }
+  function imgProbe(){ // HEAD를 지원하지 않는 환경용 예비 경로
+    const N=45,found=[];let left=N;
+    const done=()=>{if(--left)return;found.sort((a,b)=>a-b);if(found.length){GAL=found.map(i=>mkItem('assets/gallery/'+i+'.jpg'));buildGallery()}};
+    for(let i=1;i<=N;i++){const im=new Image();im.onload=()=>{found.push(i);done()};im.onerror=done;im.src='assets/gallery/'+i+'.jpg'}
+  }
 })();
 
 /* ---- 확대(핀치/더블탭) 방지 (지도 안에서는 제외) ---- */
@@ -809,7 +831,7 @@ $('#linkBtn').onclick=async()=>{await copy(location.origin+location.pathname);to
 $('#kakaoBtn').onclick=()=>{
   if(!window.Kakao||!CFG.KAKAO_JS_KEY){toast('카카오 JavaScript 키 설정이 필요합니다');return}
   if(!Kakao.isInitialized())Kakao.init(CFG.KAKAO_JS_KEY);
-  const base=location.origin+'/',url=base;
+  const base=new URL('.',location.href).href,url=base;
   Kakao.Share.sendDefault({objectType:'feed',
     content:{title:'박종환 ♥ 정다연 결혼합니다',description:'2027.02.20 토 오후 4:20\n광명 아이벡스컨벤션',imageUrl:base+'assets/share.jpg',imageWidth:800,imageHeight:1200,link:{mobileWebUrl:url,webUrl:url}},
     buttons:[{title:'청첩장 보기',link:{mobileWebUrl:url,webUrl:url}},{title:'게스트스냅',link:{mobileWebUrl:PHOTO||url,webUrl:PHOTO||url}}]});
