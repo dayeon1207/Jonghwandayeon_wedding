@@ -368,6 +368,9 @@ body.pre .music{opacity:0;pointer-events:none}
 .f-btns{display:flex;flex-direction:column;gap:8px;margin:40px auto 0;max-width:280px}
 .snap-cam-link{display:block;width:62%;max-width:300px;margin:94px auto 0;-webkit-tap-highlight-color:transparent;transition:transform .2s}
 .snap-msg{margin-top:92px;text-align:center}
+.snap-status{min-height:1.5em;margin:20px auto 0;padding:0 28px;font-size:14px;line-height:1.7;text-align:center;color:var(--main);opacity:0;transition:opacity .25s}
+.snap-status.show{opacity:1}
+.snap-input{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
 .snap-cam-link:active{transform:scale(.97)}
 .snap-cam-link .snap-cam{width:100%;max-width:none;margin:0}
 .snap-cam{display:block;width:62%;max-width:300px;height:auto;margin:24px auto 0}
@@ -533,6 +536,8 @@ body.pre .music{opacity:0;pointer-events:none}
   <div class="stitle"><div class="t-en">Snap</div><div class="t-ko">하객스냅</div></div>
   <a class="snap-cam-link" id="photoBtn" href="#" aria-label="카메라를 눌러 사진 공유하기"><img class="snap-cam" src="assets/camera.png" alt="" loading="lazy"></a>
   <p class="bye snap-msg">오늘의 소중한 찰나들을 이곳에 편하게 공유해주세요<br>보내주신 마음을 모아 평생 소중히 간직하겠습니다.<br>카메라를 눌러주세요♥︎</p>
+  <div class="snap-status" id="snapStatus" role="status" aria-live="polite"></div>
+  <input class="snap-input" type="file" id="snapInput" accept="image/*" multiple tabindex="-1" aria-hidden="true">
 </section>
 
 <!-- 12. 마무리 -->
@@ -822,11 +827,69 @@ $$('.acc-h').forEach(h=>h.onclick=()=>{const a=h.parentElement,o=a.classList.tog
 async function copy(t){try{await navigator.clipboard.writeText(t)}catch(e){const x=document.createElement('textarea');x.value=t;x.style.cssText='position:fixed;opacity:0';document.body.appendChild(x);x.select();document.execCommand('copy');x.remove()}}
 document.addEventListener('click',async e=>{const c=e.target.closest('.cp');if(c){await copy(c.dataset.n);toast('계좌번호가 복사되었습니다')}});
 
-/* ---- 포토 공유 / 링크 / 카카오 ---- */
+/* ---- 하객스냅: 인앱 업로드(구글 드라이브) / 외부 링크 폴백 / 링크 / 카카오 ---- */
+const SNAP_URL=CFG.GUEST_SNAP_UPLOAD_URL||'';
 const PHOTO=CFG.GOOGLE_PHOTOS_URL||'';
 const PHOTO_END=CFG.PHOTO_DEADLINE?Date.parse(CFG.PHOTO_DEADLINE):0; // 이 시각 이후에는 청첩장의 업로드 버튼이 닫힘(config.js 의 PHOTO_DEADLINE)
-(function(){const a=$('#photoBtn');if(PHOTO){a.href=PHOTO;a.target='_blank';a.rel='noopener noreferrer'}
-  a.addEventListener('click',e=>{if(!PHOTO){e.preventDefault();toast('업로드 링크가 곧 안내됩니다')}else if(PHOTO_END&&Date.now()>PHOTO_END){e.preventDefault();toast('사진 업로드 기간이 마감되었습니다')}})})();
+(function(){
+  const a=$('#photoBtn'),input=$('#snapInput'),st=$('#snapStatus');
+  const MAX_PER_BATCH=10,MAX_SIDE=2400,JPEG_Q=0.9;
+  const say=t=>{st.textContent=t;st.classList.add('show')};
+  const closed=()=>!!(PHOTO_END&&Date.now()>PHOTO_END);
+  if(!SNAP_URL&&PHOTO){a.href=PHOTO;a.target='_blank';a.rel='noopener noreferrer'}
+  a.addEventListener('click',e=>{
+    if(closed()){e.preventDefault();toast('사진 업로드 기간이 마감되었습니다');return}
+    if(SNAP_URL){e.preventDefault();input.click();return}
+    if(!PHOTO){e.preventDefault();toast('업로드 링크가 곧 안내됩니다')}
+  });
+  function shrink(file){
+    return new Promise(res=>{
+      const isImg=/^image\//.test(file.type)||/\.(jpe?g|png|heic|heif|webp)$/i.test(file.name||'');
+      const fallback={blob:file,mime:file.type||'image/jpeg',name:file.name||'photo.jpg'};
+      if(!isImg){res(null);return}
+      const img=new Image(),url=URL.createObjectURL(file);
+      img.onload=()=>{
+        URL.revokeObjectURL(url);
+        const w=img.naturalWidth,h=img.naturalHeight,scale=Math.min(1,MAX_SIDE/Math.max(w,h));
+        if(scale===1&&file.size<1500000){res(fallback);return}
+        const c=document.createElement('canvas');
+        c.width=Math.round(w*scale);c.height=Math.round(h*scale);
+        const ctx=c.getContext('2d');
+        ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);
+        ctx.drawImage(img,0,0,c.width,c.height);
+        c.toBlob(b=>{res(b?{blob:b,mime:'image/jpeg',name:(file.name||'photo.jpg').replace(/\.[^.]+$/,'')+'.jpg'}:fallback)},'image/jpeg',JPEG_Q);
+      };
+      img.onerror=()=>{URL.revokeObjectURL(url);res(fallback)};
+      img.src=url;
+    });
+  }
+  function toB64(blob){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).replace(/^data:[^,]*,/,''));r.onerror=()=>rej(new Error('read'));r.readAsDataURL(blob)})}
+  async function send(file){
+    const f=await shrink(file);
+    if(!f)throw new Error('not-image');
+    const data=await toB64(f.blob);
+    if(data.length>20*1024*1024)throw new Error('too-large');
+    const r=await fetch(SNAP_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fileName:f.name,mimeType:f.mime,data:data})});
+    const t=await r.text();
+    let ok=false;try{ok=JSON.parse(t).ok===true}catch(e2){ok=/"ok"\s*:\s*true/.test(t)}
+    if(!ok)throw new Error('reject');
+  }
+  input.addEventListener('change',async()=>{
+    const files=Array.prototype.slice.call(input.files||[]);
+    input.value='';
+    if(!files.length)return;
+    if(closed()){toast('사진 업로드 기간이 마감되었습니다');return}
+    if(files.length>MAX_PER_BATCH)toast('한 번에 '+MAX_PER_BATCH+'장씩 보내는 걸 권장해요');
+    let done=0,failed=0;const total=files.length;
+    for(let i=0;i<total;i++){
+      say((i+1)+' / '+total+'장 보내는 중…');
+      try{await send(files[i]);done++}catch(err){failed++}
+    }
+    if(failed===0)say(done+'장의 사진이 전달되었습니다. 감사합니다 ♥');
+    else if(done===0)say('전송하지 못했어요. 잠시 후 다시 시도해 주세요.');
+    else say(done+'장 전달 · '+failed+'장 실패 — 다시 시도해 주세요.');
+  });
+})();
 $('#linkBtn').onclick=async()=>{await copy(location.origin+location.pathname);toast('링크가 복사되었습니다')};
 $('#kakaoBtn').onclick=()=>{
   if(!window.Kakao||!CFG.KAKAO_JS_KEY){toast('카카오 JavaScript 키 설정이 필요합니다');return}
@@ -834,7 +897,7 @@ $('#kakaoBtn').onclick=()=>{
   const base=new URL('.',location.href).href,url=base;
   Kakao.Share.sendDefault({objectType:'feed',
     content:{title:'박종환 ♥ 정다연 결혼합니다',description:'2027.02.20 토 오후 4:20\n광명 아이벡스컨벤션',imageUrl:base+'assets/share.jpg',imageWidth:800,imageHeight:1200,link:{mobileWebUrl:url,webUrl:url}},
-    buttons:[{title:'청첩장 보기',link:{mobileWebUrl:url,webUrl:url}},{title:'게스트스냅',link:{mobileWebUrl:PHOTO||url,webUrl:PHOTO||url}}]});
+    buttons:[{title:'청첩장 보기',link:{mobileWebUrl:url,webUrl:url}},{title:'게스트스냅',link:{mobileWebUrl:SNAP_URL?url+'#photo':(PHOTO||url),webUrl:SNAP_URL?url+'#photo':(PHOTO||url)}}]});
 };
 </script>
 

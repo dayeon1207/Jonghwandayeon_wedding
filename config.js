@@ -10,7 +10,8 @@ window.INVITE_CONFIG = {
     appId: "1:725529009754:web:b2f82ae61a2e3f2f8d4263"
   },
   KAKAO_JS_KEY: "",                              // 카카오 JavaScript 키
-  GOOGLE_PHOTOS_URL: "https://naver.me/5T0pWYYl",   // 하객 사진 업로드 링크 (Dropbox 파일 요청 등)
+  GUEST_SNAP_UPLOAD_URL: "https://script.google.com/macros/s/AKfycbzjRHVBP3Dl2c3XM-36dEqCVb3p847cHnqF2NJ3EeZCGT9t2U1oZOlmkU-duIHcwOIz-g/exec",                    // 하객스냅 사진 업로드(Google Apps Script 웹앱 /exec URL). 채워두면 카메라 버튼이 앱 안에서 바로 업로드
+  GOOGLE_PHOTOS_URL: "https://naver.me/5T0pWYYl",   // 예비 링크 (GUEST_SNAP_UPLOAD_URL 이 비어 있을 때만 사용)
   PHOTO_DEADLINE: "2027-03-06T23:59:59+09:00",           // 이 시각(한국시간) 이후에는 청첩장의 업로드 버튼이 닫힘 (결혼식 2주 후)
   ROUTE_MAP: "assets/route.jpg",                             // 예: "assets/route.jpg" (260927약도 업로드 후)
   NAVER_MAP_CLIENT_ID: "po39mk825f",                                   // 네이버 클라우드 플랫폼 > Maps > Dynamic Map 의 Client ID (README 참고)
