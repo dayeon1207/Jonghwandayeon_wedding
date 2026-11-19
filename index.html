@@ -151,8 +151,8 @@ section{position:relative;z-index:1;padding:80px 24px;text-align:center}
 #v-close{position:absolute;top:max(16px,env(safe-area-inset-top));right:16px;width:40px;height:40px;z-index:3}
 #v-close::before,#v-close::after{content:"";position:absolute;left:8px;right:8px;top:50%;height:1px;background:#fff;transform:rotate(45deg)}
 #v-close::after{transform:rotate(-45deg)}
-#v-stage{flex:1;width:100%;display:flex;align-items:center;justify-content:center;position:relative;min-height:0;padding:64px 8px 8px}
-#v-img{max-width:100%;max-height:100%;object-fit:contain;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;-webkit-touch-callout:none;pointer-events:none;touch-action:pan-y;transition:opacity .25s}
+#v-stage{flex:1;width:100%;display:flex;align-items:center;justify-content:center;position:relative;min-height:0;padding:48px 8px 8px}
+#v-img{width:min(calc(100vw - 16px),480px);max-width:100%;height:auto;max-height:calc(100svh - 150px);object-fit:contain;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;-webkit-touch-callout:none;pointer-events:none;touch-action:pan-y;transition:opacity .25s}
 #viewer,#gallery{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .v-nav{position:absolute;top:50%;width:48px;height:48px;margin-top:-24px;color:#fff;font-size:28px;font-weight:200;opacity:.8}
 #v-prev{left:0}#v-next{right:0}
@@ -327,9 +327,9 @@ body.pre .music{opacity:0;pointer-events:none}
 .p-top{display:flex;justify-content:space-between;align-items:center;min-height:22px}
 .p-top em{font-style:normal;font-size:11.5px;color:#34332F;opacity:.6}
 .p .ic a,.p .ic button{width:28px;height:28px;font-size:13px}
-.p-row{display:flex;align-items:center;gap:10px;margin-top:4px}
+.p-row{display:flex;align-items:center;gap:8px;row-gap:6px;margin-top:4px;flex-wrap:wrap}
 .p-row b{font-size:15px;font-weight:700;color:#34332F;white-space:nowrap}
-.acc-no{font-size:14px;letter-spacing:.02em;color:#34332F}
+.acc-no{font-size:14px;letter-spacing:.02em;color:#34332F;white-space:nowrap}
 .acc-bk{font-size:13px;color:#34332F;opacity:.85;white-space:nowrap}
 .cp{margin-left:auto;flex:none;height:30px;padding:0 12px;border-radius:8px;background:#e9e5dc;color:#34332F;font-size:12px;box-shadow:var(--shadow-s)}
 .tbd{margin-top:8px;font-size:13px;opacity:.55}
@@ -627,7 +627,7 @@ function buildGallery(){
     const page=document.createElement('div');page.className='g-page';
     for(let i=p*9;i<Math.min(n,p*9+9);i++){
       const d=document.createElement('div'),k=i%9;
-      const ori=GAL.length?'p':(k%3===1?'l':'p');
+      const ori='p';
       d.className='lace '+ori+(GAL.length?'':' empty');d.style.setProperty('--rot',ROT[k]+'deg');
       d.innerHTML='<div class="ph">'+(GAL.length?'<img loading="lazy" draggable="false" alt="갤러리 사진 '+(i+1)+'" src="'+esc(GAL[i].grid)+'">':'')+'</div><img class="fr" alt="" src="'+frame(ori)+'">';
       if(GAL.length){const im=d.querySelector('.ph img'),fr=d.querySelector('.fr');im.onload=()=>{const o=im.naturalWidth>im.naturalHeight?'l':'p';d.classList.remove('p','l');d.classList.add(o);fr.src=frame(o)};d.onclick=()=>openV(i)}
@@ -651,7 +651,7 @@ GAL=(CFG.GALLERY||[]).filter(Boolean).map(mkItem);buildGallery();
 (function(){ // assets/gallery/1.jpg, 2.jpg … 순서대로 자동 인식 (오프닝이 끝난 뒤 불러와 첫 화면 속도를 우선)
   if(GAL.length)return;
   setTimeout(probe,4500);function probe(){
-  const N=45,found=[];let left=N;
+  const N=24,found=[];let left=N;
   const done=()=>{if(--left)return;found.sort((a,b)=>a-b);if(found.length){GAL=found.map(i=>mkItem('assets/gallery/'+i+'.jpg'));buildGallery()}};
   for(let i=1;i<=N;i++){const im=new Image();im.onload=()=>{found.push(i);done()};im.onerror=done;im.src='assets/gallery/'+i+'.jpg'}
 }
@@ -806,7 +806,7 @@ $('#linkBtn').onclick=async()=>{await copy(location.origin+location.pathname);to
 $('#kakaoBtn').onclick=()=>{
   if(!window.Kakao||!CFG.KAKAO_JS_KEY){toast('카카오 JavaScript 키 설정이 필요합니다');return}
   if(!Kakao.isInitialized())Kakao.init(CFG.KAKAO_JS_KEY);
-  const base=location.origin+'/',url=base;
+  const base=new URL('.',location.href).href,url=base;
   Kakao.Share.sendDefault({objectType:'feed',
     content:{title:'박종환 ♥ 정다연 결혼합니다',description:'2027.02.20 토 오후 4:20\n광명 아이벡스컨벤션',imageUrl:base+'assets/share.jpg',imageWidth:800,imageHeight:1200,link:{mobileWebUrl:url,webUrl:url}},
     buttons:[{title:'청첩장 보기',link:{mobileWebUrl:url,webUrl:url}},{title:'게스트스냅',link:{mobileWebUrl:PHOTO||url,webUrl:PHOTO||url}}]});
