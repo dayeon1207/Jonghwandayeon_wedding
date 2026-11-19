@@ -200,7 +200,7 @@ section{position:relative;z-index:1;padding:80px 24px;text-align:center}
 .map-links a:nth-child(1){justify-self:end}.map-links a:nth-child(3){justify-self:start}
 .map-links a{display:flex;align-items:center;gap:5px;padding:8px 2px;font-size:14px;font-weight:700;color:var(--main);white-space:nowrap}
 .map-links img,.map-links svg{flex:none;display:block}
-.addr{width:calc(100% - 32px);margin:40px auto 0;padding:20px 4px;border-top:1px solid rgba(91,13,29,.16);border-bottom:1px solid rgba(91,13,29,.16);display:grid;grid-template-columns:auto 1fr;column-gap:16px;row-gap:14px;text-align:left;font-size:14px;line-height:1.75}
+.addr{width:calc(100% - 32px);margin:40px auto 0;padding:20px 4px;border-top:1px solid rgba(91,13,29,.16);border-bottom:1px solid rgba(91,13,29,.16);display:grid;grid-template-columns:max-content max-content;justify-content:center;column-gap:16px;row-gap:14px;text-align:left;font-size:14px;line-height:1.75}
 .addr dt{color:var(--main);font-weight:700}
 .addr dd{margin:0}
 .sec-t{margin-top:80px;font-size:20px;font-weight:800;color:var(--main)}
@@ -365,8 +365,8 @@ body.pre .music{opacity:0;pointer-events:none}
 .thanks{font-family:var(--en);font-size:40px;letter-spacing:.06em;color:var(--main);line-height:1.1}
 .bye{margin-top:24px;font-size:14px;line-height:2.1}
 .f-btns{display:flex;flex-direction:column;gap:8px;margin:40px auto 0;max-width:280px}
-.snap-cam-link{display:block;width:62%;max-width:300px;margin:114px auto 0;-webkit-tap-highlight-color:transparent;transition:transform .2s}
-.snap-msg{margin-top:72px;text-align:center}
+.snap-cam-link{display:block;width:62%;max-width:300px;margin:94px auto 0;-webkit-tap-highlight-color:transparent;transition:transform .2s}
+.snap-msg{margin-top:92px;text-align:center}
 .snap-cam-link:active{transform:scale(.97)}
 .snap-cam-link .snap-cam{width:100%;max-width:none;margin:0}
 .snap-cam{display:block;width:62%;max-width:300px;height:auto;margin:24px auto 0}
@@ -464,7 +464,7 @@ body.pre .music{opacity:0;pointer-events:none}
       <a href="tmap://search?name=%EC%95%84%EC%9D%B4%EB%B2%A1%EC%8A%A4%EC%BB%A8%EB%B2%A4%EC%85%98" id="tmapLink"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11.5" fill="#2D5BFF"/><path d="M6.8 7.6h10.4v2.3h-4.1V17h-2.2V9.9H6.8z" fill="#fff"/></svg>티맵</a>
     </div>
   </div>
-  <dl class="addr"><dt>주소</dt><dd>경기 광명시 일직동 512-3<br>AK플라자 광명 5층 아이벡스컨벤션</dd><dt>시간</dt><dd>2027. 02. 20 (토) PM 04:20</dd></dl>
+  <dl class="addr"><dt>주&nbsp;&nbsp;소</dt><dd>경기 광명시 일직동 512-3<br>AK플라자 광명 5층 아이벡스컨벤션</dd><dt>시&nbsp;&nbsp;간</dt><dd>2027. 02. 20 (토) PM 04:20</dd></dl>
 
   <h3 class="sec-t">교통편안내</h3>
   <div class="slot" id="mapSlot">약도 이미지 (260927약도) 업로드 후 표시됩니다</div>
@@ -791,7 +791,7 @@ const SIDES=[
  {k:'신랑측',p:[{r:'신랑',n:'박종환',tel:P.PRIVATE_GROOM_PHONE,b:P.PRIVATE_GROOM_BANK,a:P.PRIVATE_GROOM_ACCOUNT},{r:'신랑 어머니',n:'김선옥',b:P.PRIVATE_GROOM_MOTHER_BANK,a:P.PRIVATE_GROOM_MOTHER_ACCOUNT}]},
  {k:'신부측',p:[{r:'신부',n:'정다연',tel:P.PRIVATE_BRIDE_PHONE,b:P.PRIVATE_BRIDE_BANK,a:P.PRIVATE_BRIDE_ACCOUNT},{r:'신부 아버지',n:'정흥모',b:P.PRIVATE_BRIDE_FATHER_BANK,a:P.PRIVATE_BRIDE_FATHER_ACCOUNT},{r:'신부 어머니',n:'금애경',b:P.PRIVATE_BRIDE_MOTHER_BANK,a:P.PRIVATE_BRIDE_MOTHER_ACCOUNT}]}];
 $('#accs').innerHTML=SIDES.map((s,i)=>'<div class="acc" id="acc'+i+'"><button class="acc-h" aria-expanded="false">'+s.k+' 계좌번호<i>⌄</i></button><div class="fold"><div><div class="acc-b">'+s.p.map(p=>
- '<div class="p"><div class="p-top"><em>'+p.r+'</em>'+(p.tel?'<div class="ic"><a href="tel:'+p.tel+'" aria-label="전화">☎</a><a href="sms:'+p.tel+'" aria-label="문자">✉</a></div>':'')+'</div>'+
+ '<div class="p"><div class="p-top"><em>'+p.r+'</em>'+'</div>'+
  (p.a?'<div class="p-row"><b>'+p.n+'</b><span class="acc-no">'+p.a+'</span><span class="acc-bk">'+(p.b||'')+'</span><button class="cp" data-n="'+p.a.replace(/\D/g,'')+'">복사하기</button></div>':'<div class="p-row"><b>'+p.n+'</b><span class="tbd" style="margin:0">추후입력</span></div>')+'</div>').join('')+'</div></div></div></div>').join('');
 $$('.acc-h').forEach(h=>h.onclick=()=>{const a=h.parentElement,o=a.classList.toggle('open');a.querySelector('.fold').classList.toggle('open',o);h.setAttribute('aria-expanded',o)});
 async function copy(t){try{await navigator.clipboard.writeText(t)}catch(e){const x=document.createElement('textarea');x.value=t;x.style.cssText='position:fixed;opacity:0';document.body.appendChild(x);x.select();document.execCommand('copy');x.remove()}}
