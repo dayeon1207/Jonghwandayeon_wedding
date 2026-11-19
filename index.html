@@ -19,6 +19,7 @@
 /* ROMANTICE 폰트 파일을 assets/fonts/ 에 넣으면 자동 적용됩니다 (없으면 Great Vibes로 대체) */
 @font-face{font-family:'ROMANTICE';src:url('assets/fonts/ROMANTICE.otf') format('opentype');font-display:swap}
 @font-face{font-family:'Brittany Signature';src:url('assets/fonts/BrittanySignature.ttf') format('truetype');font-display:swap}
+@font-face{font-family:'BuJangNim';src:url('assets/fonts/NanumBuJangNimNunCiCe.woff') format('woff');font-display:swap}
 @font-face{font-family:'Monster Clubhouse';src:url('assets/fonts/Monster_Clubhouse.ttf') format('truetype');font-display:block}
 :root{
   --main:#5b0d1d;--sub:#e0ddd4;--gold:#B99A6A;--char:#34332F;
@@ -216,6 +217,7 @@ section{position:relative;z-index:1;padding:80px 24px;text-align:center}
 .det h3:first-child{margin-top:0}
 .det h3::after{content:"";flex:1;height:1px;background:var(--gold)}
 .det p{font-size:14px;line-height:1.6}
+.det .fit{letter-spacing:-.03em}
 .det .star{margin-top:16px;padding-left:.55em;text-indent:-.55em}
 .det .ast{display:inline-block;width:.55em;text-indent:0}
 .det mark{background:rgba(185,154,106,.3);padding:0 6px;border-radius:6px;font-weight:700;color:var(--main)}
@@ -328,9 +330,9 @@ body.pre .music{opacity:0;pointer-events:none}
 .p-top{display:flex;justify-content:space-between;align-items:center;min-height:22px}
 .p-top em{font-style:normal;font-size:11.5px;color:#34332F;opacity:.6}
 .p .ic a,.p .ic button{width:28px;height:28px;font-size:13px}
-.p-row{display:flex;align-items:center;gap:10px;margin-top:4px}
+.p-row{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:4px}
 .p-row b{font-size:15px;font-weight:700;color:#34332F;white-space:nowrap}
-.acc-no{font-size:14px;letter-spacing:.02em;color:#34332F}
+.acc-no{font-size:14px;letter-spacing:.02em;color:#34332F;white-space:nowrap}
 .acc-bk{font-size:13px;color:#34332F;opacity:.85;white-space:nowrap}
 .cp{margin-left:auto;flex:none;height:30px;padding:0 12px;border-radius:8px;background:#e9e5dc;color:#34332F;font-size:12px;box-shadow:var(--shadow-s)}
 .tbd{margin-top:8px;font-size:13px;opacity:.55}
@@ -346,17 +348,18 @@ body.pre .music{opacity:0;pointer-events:none}
 .nt{flex:none;aspect-ratio:720/329;background-image:url(assets/note_top.webp)}
 .nm{flex:1 1 auto;min-height:0;margin:-1px 0;background-image:url(assets/note_mid.webp)}
 .nb{flex:none;aspect-ratio:720/116;background-image:url(assets/note_bot.webp)}
+.paper p,.m-card p,.paper .who,.m-card .who{font-family:'BuJangNim','Nanum Myeongjo',serif;font-weight:400}
 .paper p,.m-card p{color:var(--char)}
-.paper p{position:absolute;left:26px;right:26px;top:82px;font-size:14px;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
-.paper .who{position:absolute;right:26px;bottom:40px;font-weight:800;color:var(--main);font-size:14px}
+.paper p{position:absolute;left:26px;right:26px;top:80px;font-size:16px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
+.paper .who{position:absolute;right:26px;bottom:40px;color:var(--main);font-size:17px}
 .del{position:absolute;top:58px;right:16px;z-index:4;width:24px;height:24px;font-size:12px;color:var(--char);opacity:.55;background:rgba(255,255,255,.5);border-radius:50%}
 .gb-empty{margin:0 auto;font-size:13px;opacity:.6;padding:32px 0}
 #modal{position:fixed;inset:0;z-index:210;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:24px}
 #modal.show{display:flex}
 .m-card{position:relative;width:100%;max-width:400px;aspect-ratio:720/1046;max-height:80dvh;display:flex;flex-direction:column;text-align:left;filter:drop-shadow(0 16px 32px rgba(0,0,0,.5))}
 .m-card .nm{padding:8px 30px 6px;overflow-y:auto;display:flex;flex-direction:column;-webkit-overflow-scrolling:touch}
-.m-card p{font-size:15px;line-height:2;white-space:pre-wrap;overflow-wrap:anywhere}
-.m-card .who{display:block;margin-top:auto;padding-top:24px;text-align:right;font-weight:800;color:var(--main)}
+.m-card p{font-size:17px;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere}
+.m-card .who{display:block;margin-top:auto;padding-top:24px;text-align:right;color:var(--main);font-size:19px}
 #m-x{position:fixed;top:max(16px,env(safe-area-inset-top));right:16px;width:40px;height:40px}
 #m-x::before,#m-x::after{content:"";position:absolute;left:8px;right:8px;top:50%;height:1px;background:#fff;transform:rotate(45deg)}
 #m-x::after{transform:rotate(-45deg)}
@@ -368,12 +371,16 @@ body.pre .music{opacity:0;pointer-events:none}
 .f-btns{display:flex;flex-direction:column;gap:8px;margin:40px auto 0;max-width:280px}
 .snap-cam-link{display:block;width:62%;max-width:300px;margin:94px auto 0;-webkit-tap-highlight-color:transparent;transition:transform .2s}
 .snap-msg{margin-top:92px;text-align:center}
+.snap-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden}
+.snap-status{margin-top:16px;text-align:center;font-size:13px;color:var(--main)}
+.snap-status:empty{display:none}
 .snap-cam-link:active{transform:scale(.97)}
 .snap-cam-link .snap-cam{width:100%;max-width:none;margin:0}
 .snap-cam{display:block;width:62%;max-width:300px;height:auto;margin:24px auto 0}
 .filmstrip{margin:72px -60px 56px;display:flex;justify-content:center;transform:rotate(-5deg)}
 .strip{position:relative;flex:none;padding:30px 0;--pw:min(54vw,260px);box-shadow:0 6px 10px rgba(52,51,47,.3)}
-.track{position:relative;display:flex;will-change:transform;animation:filmrun 18s linear infinite}
+.track{position:relative;display:flex;animation:filmrun 18s linear infinite;animation-play-state:paused}
+.filmstrip.run .track{animation-play-state:running;will-change:transform}
 .track::before,.track::after{content:"";position:absolute;left:0;right:0;height:30px;background:url(assets/film_band.png) repeat-x 0 0/calc(var(--pw) + 12px) 30px;z-index:1}
 .track::before{top:-30px}.track::after{bottom:-30px}
 @keyframes filmrun{to{transform:translate3d(calc(-2 * (var(--pw) + 12px)),0,0)}}
@@ -481,23 +488,23 @@ body.pre .music{opacity:0;pointer-events:none}
   <div class="stitle"><div class="t-en">Notice</div><div class="t-ko">안내사항</div></div>
   <div class="det">
     <h3>주차 안내</h3>
-    <p>AK플라자 지하 B3~B8에 주차가 가능하며, <mark>지하 B5~B6</mark>에 주차하시면 예식장으로 이동하기 가장 편리합니다. (총 3,200대 주차 가능)</p>
+    <p>AK플라자 지하 B3~B8에 주차가 가능하며,<br><b><mark>지하 B5~B6</mark>에 주차하시면 예식장으로 이동하기 가장 편리합니다.</b> (총 3,200대 주차 가능)</p>
     <p style="margin-top:8px">주차장 기둥에 ‘IVEX’ 표시가 있는 구역에 주차하시면 엘리베이터를 더욱 편리하게 이용하실 수 있습니다.</p>
 
     <h3>주차 후 오시는 길</h3>
-    <p>사진 속 ‘AK플라자 엘리베이터’를 이용하시면 예식장까지 편리하게 올라오실 수 있습니다.<br>에스컬레이터를 이용하시는 경우, 반드시 ‘아이벡스컨벤션’ 안내 간판이 있는 에스컬레이터를 이용해 주세요.</p>
+    <p>사진 속 ‘AK플라자 엘리베이터’를 이용하시면 예식장까지 편리하게 올라오실 수 있습니다.<br><span class="fit">에스컬레이터를 이용하시는 경우, 반드시 ‘아이벡스컨벤션’</span><br>안내 간판이 있는 에스컬레이터를 이용해 주세요.</p>
     <div class="ph3"><figure><img src="assets/d1.jpg" alt="" loading="lazy">주차장 내 엘리베이터</figure><figure><img src="assets/d2.jpg" alt="" loading="lazy">주차장 내 엘리베이터</figure><figure><img src="assets/d3.jpg" alt="" loading="lazy">주차장 내 에스컬레이터</figure></div>
 
     <h3>광명역에서 오시는 길</h3>
-    <p>광명역에서 오시는 경우, <mark>1번 출구</mark> 앞 보행자 도로를 이용하시는 것을 추천드립니다. AK플라자 방면으로 횡단보도 건너신 후 탑텐 옆 골목의 로또판매점을 찾아주세요! 사진 속 외부 에스컬레이터를 이용하면 편리합니다.</p>
+    <p>광명역에서 오시는 경우, <mark>1번 출구</mark> 앞 보행자 도로를 이용하시는 것을 추천드립니다.<br>AK플라자 방면으로 횡단보도 건너신 후 탑텐 옆 골목의 로또판매점을 찾아주세요!<br>사진 속 외부 에스컬레이터를 이용하면 편리합니다.</p>
     <div class="ph3" style="grid-template-columns:1fr 1fr"><figure><img src="assets/dlotto.jpg" alt="" loading="lazy">로또 판매점</figure><figure><img src="assets/desc.jpg" alt="" loading="lazy">외부 에스컬레이터</figure></div>
     <p class="star"><span class="ast">*</span>AK플라자 ‘내부’ 에스컬레이터는 4층까지만 운행하며 5층 예식장과 연결되어 있지 않으니 이용 시 참고 부탁드립니다.</p>
 
     <h3>연회장 안내</h3>
-    <p>연회장은 로비와 같은 층에 맞닿아 있습니다. 예식 30분 전부터 2시간 동안 이용 가능합니다.</p>
+    <p>연회장은 로비와 같은 층에 맞닿아 있습니다.<br>예식 30분 전부터 2시간 동안 이용 가능합니다.</p>
 
     <h3>웰컴드링크존</h3>
-    <p>로비에 하객분들을 위한 ‘웰컴드링크존’이 준비되어 있습니다. 커피, 주스 등이 준비되어 있으며 이곳에서 셀프 주차등록(2시간)이 가능합니다.</p>
+    <p>로비에 하객분들을 위한 ‘웰컴드링크존’이 준비되어 있습니다. 커피, 주스 등이 준비되어 있으며 <b>이곳에서 셀프 주차등록(2시간)이 가능합니다.</b></p>
   </section>
 
 <!-- 8. RSVP -->
@@ -532,6 +539,8 @@ body.pre .music{opacity:0;pointer-events:none}
   <div class="stitle"><div class="t-en">Snap</div><div class="t-ko">하객스냅</div></div>
   <a class="snap-cam-link" id="photoBtn" href="#" aria-label="카메라를 눌러 사진 공유하기"><img class="snap-cam" src="assets/camera.png" alt="" loading="lazy"></a>
   <p class="bye snap-msg">오늘의 소중한 찰나들을 이곳에 편하게 공유해주세요<br>보내주신 마음을 모아 평생 소중히 간직하겠습니다.<br>카메라를 눌러주세요♥︎</p>
+  <input type="file" id="snapInput" class="snap-input" accept="image/*" multiple tabindex="-1" aria-hidden="true">
+  <p class="snap-status" id="snapStatus" role="status" aria-live="polite"></p>
 </section>
 
 <!-- 12. 마무리 -->
@@ -633,7 +642,7 @@ function buildGallery(){
       const ori=GAL.length?'p':(k%3===1?'l':'p');
       d.className='lace '+ori+(GAL.length?'':' empty');d.style.setProperty('--rot',ROT[k]+'deg');
       d.innerHTML='<div class="ph">'+(GAL.length?'<img loading="lazy" draggable="false" alt="갤러리 사진 '+(i+1)+'" src="'+esc(GAL[i].grid)+'">':'')+'</div><img class="fr" alt="" src="'+frame(ori)+'">';
-      if(GAL.length){const im=d.querySelector('.ph img'),fr=d.querySelector('.fr');im.onload=()=>{const o=im.naturalWidth>im.naturalHeight?'l':'p';d.classList.remove('p','l');d.classList.add(o);fr.src=frame(o)};d.onclick=()=>openV(i)}
+      if(GAL.length){const im=d.querySelector('.ph img'),fr=d.querySelector('.fr');im.onerror=()=>{im.onerror=null;im.src=GAL[i].full};im.onload=()=>{const o=im.naturalWidth>im.naturalHeight?'l':'p';d.classList.remove('p','l');d.classList.add(o);fr.src=frame(o)};d.onclick=()=>openV(i)}
       page.appendChild(d);
     }
     pg.appendChild(page);
@@ -641,7 +650,7 @@ function buildGallery(){
   }
   const setDot=()=>{const k=Math.round(pg.scrollLeft/pg.clientWidth);[...dots.children].forEach((d,j)=>d.classList.toggle('on',j===k))};
   pg.onscroll=setDot;setDot();
-  GAL.forEach((it,k)=>{const t=document.createElement('div');t.className='vt';t.onclick=()=>showV(k);const im=new Image();im.src=it.thumb;im.alt='';im.draggable=false;t.appendChild(im);VT.appendChild(t)});
+  GAL.forEach((it,k)=>{const t=document.createElement('div');t.className='vt';t.onclick=()=>showV(k);const im=new Image();im.onerror=()=>{im.onerror=null;im.src=it.full};im.src=it.thumb;im.alt='';im.draggable=false;t.appendChild(im);VT.appendChild(t)});
 }
 function openV(i){V.classList.add('show');showV(i);document.body.style.overflow='hidden'}
 function showV(i){vi=(i+GAL.length)%GAL.length;VI.style.opacity=0;VI.src=GAL[vi].full;VI.onload=()=>VI.style.opacity=1;[...VT.children].forEach((t,k)=>t.classList.toggle('cur',k===vi));VT.children[vi]?.scrollIntoView({inline:'center',block:'nearest'})}
@@ -651,13 +660,14 @@ document.addEventListener('keydown',e=>{if(!V.classList.contains('show'))return;
 (function(){let x=0,y=0;V.addEventListener('touchstart',e=>{x=e.touches[0].clientX;y=e.touches[0].clientY},{passive:true});
 V.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-x,dy=e.changedTouches[0].clientY-y;if(Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)*1.5)showV(vi+(dx<0?1:-1))},{passive:true})})();
 GAL=(CFG.GALLERY||[]).filter(Boolean).map(mkItem);buildGallery();
-(function(){ // assets/gallery/1.jpg, 2.jpg … 순서대로 자동 인식 (오프닝이 끝난 뒤 불러와 첫 화면 속도를 우선)
+(function(){ // assets/gallery/1.jpg, 2.jpg … 존재만 HEAD 로 확인 (번호가 끊기면 거기서 멈춤, 최대 60장). 썸네일은 assets/gallery/thumb/N.jpg
   if(GAL.length)return;
-  setTimeout(probe,4500);function probe(){
-  const N=45,found=[];let left=N;
-  const done=()=>{if(--left)return;found.sort((a,b)=>a-b);if(found.length){GAL=found.map(i=>mkItem('assets/gallery/'+i+'.jpg'));buildGallery()}};
-  for(let i=1;i<=N;i++){const im=new Image();im.onload=()=>{found.push(i);done()};im.onerror=done;im.src='assets/gallery/'+i+'.jpg'}
-}
+  setTimeout(probe,4500);
+  function probe(){
+    const N=60,isImg=k=>fetch('assets/gallery/'+k+'.jpg',{method:'HEAD',cache:'no-store'}).then(r=>r.ok&&/image/.test(r.headers.get('content-type')||'')).catch(()=>false);
+    Promise.all(Array.from({length:N},(_,k)=>isImg(k+1))).then(ok=>{let n=0;while(n<N&&ok[n])n++;
+      if(n){GAL=Array.from({length:n},(_,k)=>({full:'assets/gallery/'+(k+1)+'.jpg',grid:'assets/gallery/thumb/'+(k+1)+'.jpg',thumb:'assets/gallery/thumb/'+(k+1)+'.jpg'}));buildGallery()}});
+  }
 })();
 
 /* ---- 확대(핀치/더블탭) 방지 (지도 안에서는 제외) ---- */
@@ -704,17 +714,21 @@ $('#tmapLink').addEventListener('click',e=>{
 }})();
 
 
-/* ---- RSVP 하단 시트: RSVP 섹션을 지나 마음 전하실 곳이 보이기 시작할 때 한 번 올라옴 ---- */
-(function(){const sh=$('#rsSheet');let shown=false;
+/* ---- RSVP 하단 시트: Save the date 의 '결혼식까지 ○○일 남았습니다' 문구가 화면 위로 지나갈 때 한 번 올라옴 ---- */
+(function(){const sh=$('#rsSheet'),msg=$('#cdMsg');let shown=false;
   const open=()=>{if(shown||$('#rsvpModal').classList.contains('show'))return;shown=true;sh.classList.add('show');sh.setAttribute('aria-hidden','false')};
   const close=()=>{sh.classList.remove('show');sh.setAttribute('aria-hidden','true')};
-  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.boundingClientRect.top>=0)open()}),{rootMargin:'0px 0px -45% 0px',threshold:0}).observe($('#gift'));
+  const chk=()=>{if(shown)return;const r=msg.getBoundingClientRect();if(r.height&&r.bottom<innerHeight*.35)open()};
+  addEventListener('scroll',chk,{passive:true});
   sh.querySelector('.rs-x').onclick=close;sh.querySelector('.rs-scrim').onclick=close;
   sh.querySelector('.rs-go').onclick=()=>{close();$('#envBtn').click()};
   $('#envBtn').addEventListener('click',()=>{shown=true});
 })();
 
 /* ---- Location 과 Detail 바탕을 하나로 이어지게: Detail 바탕 위치를 Location 높이만큼 당겨 맞춤 ---- */
+(function(){const f=$('.filmstrip');if(!f)return;if(!window.IntersectionObserver){f.classList.add('run');return}
+  new IntersectionObserver(es=>es.forEach(e=>f.classList.toggle('run',e.isIntersecting)),{rootMargin:'120px 0px'}).observe(f)})();
+
 (function(){const L=$('#location'),r=document.documentElement,upd=()=>r.style.setProperty('--locH',L.offsetHeight+'px');
   upd();addEventListener('load',upd);addEventListener('resize',upd);if(window.ResizeObserver)new ResizeObserver(upd).observe(L);})();
 
@@ -803,16 +817,55 @@ document.addEventListener('click',async e=>{const c=e.target.closest('.cp');if(c
 /* ---- 포토 공유 / 링크 / 카카오 ---- */
 const PHOTO=CFG.GOOGLE_PHOTOS_URL||'';
 const PHOTO_END=CFG.PHOTO_DEADLINE?Date.parse(CFG.PHOTO_DEADLINE):0; // 이 시각 이후에는 청첩장의 업로드 버튼이 닫힘(config.js 의 PHOTO_DEADLINE)
-(function(){const a=$('#photoBtn');if(PHOTO){a.href=PHOTO;a.target='_blank';a.rel='noopener noreferrer'}
-  a.addEventListener('click',e=>{if(!PHOTO){e.preventDefault();toast('업로드 링크가 곧 안내됩니다')}else if(PHOTO_END&&Date.now()>PHOTO_END){e.preventDefault();toast('사진 업로드 기간이 마감되었습니다')}})})();
+const SNAP_URL=CFG.GUEST_SNAP_UPLOAD_URL||'';
+(function(){const a=$('#photoBtn'),inp=$('#snapInput'),st=$('#snapStatus');let busy=false;
+  if(PHOTO&&!SNAP_URL){a.href=PHOTO;a.target='_blank';a.rel='noopener noreferrer'}
+  const say=t=>{st.textContent=t};
+  const b64=blob=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]);r.onerror=rej;r.readAsDataURL(blob)});
+  async function prep(file){ // 긴 변 2400px · JPEG q0.9 로 줄여 전송 (이미 작으면 원본 그대로)
+    try{
+      const MAX=2400;let bmp,w,h;
+      if(window.createImageBitmap){bmp=await createImageBitmap(file,{imageOrientation:'from-image'});w=bmp.width;h=bmp.height}
+      else{bmp=await new Promise((res,rej)=>{const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{URL.revokeObjectURL(u);res(im)};im.onerror=rej;im.src=u});w=bmp.naturalWidth;h=bmp.naturalHeight}
+      const k=Math.min(1,MAX/Math.max(w,h));
+      if(k===1&&file.size<=1.5*1048576)return{blob:file,name:file.name||'photo.jpg',type:file.type||'image/jpeg'};
+      const c=document.createElement('canvas');c.width=Math.round(w*k);c.height=Math.round(h*k);c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);
+      const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.9));if(!blob)throw 0;
+      return{blob,name:(file.name||'photo').replace(/\.[^.]+$/,'')+'.jpg',type:'image/jpeg'};
+    }catch(e){return{blob:file,name:file.name||'photo.jpg',type:file.type||'image/jpeg'}}
+  }
+  async function send(f){
+    const p=await prep(f);
+    const r=await fetch(SNAP_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fileName:p.name,mimeType:p.type,data:await b64(p.blob)})});
+    const j=await r.json();return !!(j&&j.ok);
+  }
+  a.addEventListener('click',e=>{
+    if(!SNAP_URL){if(!PHOTO){e.preventDefault();toast('업로드 링크가 곧 안내됩니다')}else if(PHOTO_END&&Date.now()>PHOTO_END){e.preventDefault();toast('사진 업로드 기간이 마감되었습니다')}return}
+    e.preventDefault();
+    if(PHOTO_END&&Date.now()>PHOTO_END){toast('사진 업로드 기간이 마감되었습니다');return}
+    if(busy){toast('사진을 보내는 중이에요');return}
+    inp.click();
+  });
+  inp.addEventListener('change',async()=>{
+    const files=[...inp.files];inp.value='';if(!files.length)return;
+    if(files.length>10)toast('한 번에 10장씩 보내는 걸 권장해요');
+    busy=true;let ok=0;
+    for(let i=0;i<files.length;i++){
+      say((i+1)+' / '+files.length+'장 보내는 중…');
+      try{if(await send(files[i]))ok++}catch(e){}
+    }
+    busy=false;
+    say(ok===files.length?ok+'장의 사진이 전달되었습니다. 감사합니다 ♥':(ok?ok+'장은 전달되었고, ':'')+(files.length-ok)+'장은 전달하지 못했어요. 잠시 후 다시 시도해 주세요.');
+  });
+})();
 $('#linkBtn').onclick=async()=>{await copy(location.origin+location.pathname);toast('링크가 복사되었습니다')};
 $('#kakaoBtn').onclick=()=>{
   if(!window.Kakao||!CFG.KAKAO_JS_KEY){toast('카카오 JavaScript 키 설정이 필요합니다');return}
   if(!Kakao.isInitialized())Kakao.init(CFG.KAKAO_JS_KEY);
-  const base=location.origin+'/',url=base;
+  const base=new URL('.',location.href).href,url=base;
   Kakao.Share.sendDefault({objectType:'feed',
     content:{title:'박종환 ♥ 정다연 결혼합니다',description:'2027.02.20 토 오후 4:20\n광명 아이벡스컨벤션',imageUrl:base+'assets/share.jpg',imageWidth:800,imageHeight:1200,link:{mobileWebUrl:url,webUrl:url}},
-    buttons:[{title:'청첩장 보기',link:{mobileWebUrl:url,webUrl:url}},{title:'게스트스냅',link:{mobileWebUrl:PHOTO||url,webUrl:PHOTO||url}}]});
+    buttons:[{title:'청첩장 보기',link:{mobileWebUrl:url,webUrl:url}},{title:'게스트스냅',link:{mobileWebUrl:url+'#photo',webUrl:url+'#photo'}}]});
 };
 </script>
 

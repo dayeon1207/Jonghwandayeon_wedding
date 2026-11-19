@@ -2,14 +2,15 @@
 window.INVITE_CONFIG = {
   // Firebase 콘솔 > 프로젝트 설정 > 내 앱(웹)에서 복사
   FIREBASE: {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyDfS0TIOko07NRv7SS5pk9BaPFFkcuVhj4",
+    authDomain: "wedding-invitation-64e0b.firebaseapp.com",
+    projectId: "wedding-invitation-64e0b",
+    storageBucket: "wedding-invitation-64e0b.firebasestorage.app",
+    messagingSenderId: "725529009754",
+    appId: "1:725529009754:web:b2f82ae61a2e3f2f8d4263"
   },
-  KAKAO_JS_KEY: "",                              // 카카오 JavaScript 키
+  KAKAO_JS_KEY: "5a7047a85a0950f84c3e3f2c0aa70fbf",                              // 카카오 JavaScript 키
+  GUEST_SNAP_UPLOAD_URL: "https://script.google.com/macros/s/AKfycbzjRHVBP3Dl2c3XM-36dEqCVb3p847cHnqF2NJ3EeZCGT9t2U1oZOlmkU-duIHcwOIz-g/exec",   // 하객스냅: 신부 구글 드라이브 폴더로 바로 업로드 (Google Apps Script 웹앱)
   GOOGLE_PHOTOS_URL: "https://naver.me/5T0pWYYl",   // 하객 사진 업로드 링크 (Dropbox 파일 요청 등)
   PHOTO_DEADLINE: "2027-03-06T23:59:59+09:00",           // 이 시각(한국시간) 이후에는 청첩장의 업로드 버튼이 닫힘 (결혼식 2주 후)
   ROUTE_MAP: "assets/route.jpg",                             // 예: "assets/route.jpg" (260927약도 업로드 후)
