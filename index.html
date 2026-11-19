@@ -196,8 +196,7 @@ section{position:relative;z-index:1;padding:80px 24px;text-align:center}
 .nm-pin span{position:absolute;left:50%;top:42px;transform:translateX(-50%);white-space:nowrap;font:700 13px/1.2 'Nanum Myeongjo',serif;color:#34332F;text-shadow:-1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff,1px 1px 0 #fff,0 0 4px #fff}
 .nmap-ph{height:100%;display:grid;place-items:center;padding:24px;font-size:13px;color:var(--char);opacity:.7;line-height:1.8}
 .map iframe{width:100%;height:280px;border:0;border-radius:var(--r);box-shadow:var(--shadow);display:block;filter:sepia(.25) saturate(.9)}
-.map-links{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);column-gap:18px;align-items:center;margin-top:16px}
-.map-links a:nth-child(1){justify-self:end}.map-links a:nth-child(3){justify-self:start}
+.map-links{display:flex;justify-content:center;column-gap:18px;align-items:center;margin-top:16px}
 .map-links a{display:flex;align-items:center;gap:5px;padding:8px 2px;font-size:14px;font-weight:700;color:var(--main);white-space:nowrap}
 .map-links img,.map-links svg{flex:none;display:block}
 .addr{width:calc(100% - 32px);margin:40px auto 0;padding:20px 4px;border-top:1px solid rgba(91,13,29,.16);border-bottom:1px solid rgba(91,13,29,.16);display:grid;grid-template-columns:max-content max-content;justify-content:center;column-gap:16px;row-gap:14px;text-align:left;font-size:14px;line-height:1.75}
@@ -213,10 +212,12 @@ section{position:relative;z-index:1;padding:80px 24px;text-align:center}
 #detail{padding:80px 24px;background:url(assets/sunlight.jpg) center calc(500px - var(--locH,1500px))/100% auto repeat-y,#e0ddd4}
 #detail>.title-ko{color:var(--main)}
 .det{text-align:left;margin-top:48px}
-.det h3{font-size:19px;font-weight:800;color:var(--main);display:flex;align-items:center;gap:16px;margin:48px 0 16px}
+.det h3{font-size:19px;font-weight:800;color:var(--main);display:flex;align-items:center;gap:16px;margin:38px 0 16px}
 .det h3:first-child{margin-top:0}
 .det h3::after{content:"";flex:1;height:1px;background:var(--gold)}
-.det p{font-size:14px;line-height:1.9}
+.det p{font-size:14px;line-height:1.6}
+.det .star{margin-top:16px;padding-left:.55em;text-indent:-.55em}
+.det .ast{display:inline-block;width:.55em;text-indent:0}
 .det mark{background:rgba(185,154,106,.3);padding:0 6px;border-radius:6px;font-weight:700;color:var(--main)}
 .det .ph3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
 .det figure{font-size:11.5px;text-align:center}
@@ -482,20 +483,22 @@ body.pre .music{opacity:0;pointer-events:none}
     <h3>주차 안내</h3>
     <p>AK플라자 지하 B3~B8에 주차가 가능하며, <mark>지하 B5~B6</mark>에 주차하시면 예식장으로 이동하기 가장 편리합니다. (총 3,200대 주차 가능)</p>
     <p style="margin-top:8px">주차장 기둥에 ‘IVEX’ 표시가 있는 구역에 주차하시면 엘리베이터를 더욱 편리하게 이용하실 수 있습니다.</p>
-    <div class="ph3"><figure><img src="assets/d1.jpg" alt="" loading="lazy">주차장 내 엘리베이터</figure><figure><img src="assets/d2.jpg" alt="" loading="lazy">주차장 내 엘리베이터</figure><figure><img src="assets/d3.jpg" alt="" loading="lazy">주차장 내 에스컬레이터</figure></div>
 
     <h3>주차 후 오시는 길</h3>
     <p>사진 속 ‘AK플라자 엘리베이터’를 이용하시면 예식장까지 편리하게 올라오실 수 있습니다.<br>에스컬레이터를 이용하시는 경우, 반드시 ‘아이벡스컨벤션’ 안내 간판이 있는 에스컬레이터를 이용해 주세요.</p>
+    <div class="ph3"><figure><img src="assets/d1.jpg" alt="" loading="lazy">주차장 내 엘리베이터</figure><figure><img src="assets/d2.jpg" alt="" loading="lazy">주차장 내 엘리베이터</figure><figure><img src="assets/d3.jpg" alt="" loading="lazy">주차장 내 에스컬레이터</figure></div>
 
     <h3>광명역에서 오시는 길</h3>
-    <p>광명역에서 오시는 경우, <mark>1번 출구</mark> 앞 보행자 도로를 이용하시는 것을 추천드립니다.</p>
-    <img class="map-img" src="assets/dmap.jpg" alt="광명역에서 AK플라자 약도" loading="lazy">
-    <ol class="steps"><li>광명역 1번 출구</li><li>AK플라자 방면 횡단보도 건너기</li><li>탑텐 옆 골목의 로또 판매점</li><li>인근 에스컬레이터 이용</li></ol>
+    <p>광명역에서 오시는 경우, <mark>1번 출구</mark> 앞 보행자 도로를 이용하시는 것을 추천드립니다. AK플라자 방면으로 횡단보도 건너신 후 탑텐 옆 골목의 로또판매점을 찾아주세요! 사진 속 외부 에스컬레이터를 이용하면 편리합니다.</p>
     <div class="ph3" style="grid-template-columns:1fr 1fr"><figure><img src="assets/dlotto.jpg" alt="" loading="lazy">로또 판매점</figure><figure><img src="assets/desc.jpg" alt="" loading="lazy">외부 에스컬레이터</figure></div>
+    <p class="star"><span class="ast">*</span>AK플라자 ‘내부’ 에스컬레이터는 4층까지만 운행하며 5층 예식장과 연결되어 있지 않으니 이용 시 참고 부탁드립니다.</p>
 
-    <div class="notice"><b>유의사항</b>AK플라자 내부 에스컬레이터는 4층까지만 운행하며, 5층 예식장과 연결되어 있지 않으니 이용 시 참고 부탁드립니다.</div>
-  </div>
-</section>
+    <h3>연회장 안내</h3>
+    <p>연회장은 로비와 같은 층에 맞닿아 있습니다. 예식 30분 전부터 2시간 동안 이용 가능합니다.</p>
+
+    <h3>웰컴드링크존</h3>
+    <p>로비에 하객분들을 위한 ‘웰컴드링크존’이 준비되어 있습니다. 커피, 주스 등이 준비되어 있으며 이곳에서 셀프 주차등록(2시간)이 가능합니다.</p>
+  </section>
 
 <!-- 8. RSVP -->
 <section id="rsvp">
