@@ -19,6 +19,7 @@
 /* ROMANTICE 폰트 파일을 assets/fonts/ 에 넣으면 자동 적용됩니다 (없으면 Great Vibes로 대체) */
 @font-face{font-family:'ROMANTICE';src:url('assets/fonts/ROMANTICE.otf') format('opentype');font-display:swap}
 @font-face{font-family:'Brittany Signature';src:url('assets/fonts/BrittanySignature.ttf') format('truetype');font-display:swap}
+@font-face{font-family:'BuJangNim';src:url('assets/fonts/NanumBuJangNimNunCiCe.woff') format('woff');font-display:swap}
 @font-face{font-family:'Monster Clubhouse';src:url('assets/fonts/Monster_Clubhouse.ttf') format('truetype');font-display:block}
 :root{
   --main:#5b0d1d;--sub:#e0ddd4;--gold:#B99A6A;--char:#34332F;
@@ -216,6 +217,7 @@ section{position:relative;z-index:1;padding:80px 24px;text-align:center}
 .det h3:first-child{margin-top:0}
 .det h3::after{content:"";flex:1;height:1px;background:var(--gold)}
 .det p{font-size:14px;line-height:1.6}
+.det .fit{letter-spacing:-.03em}
 .det .star{margin-top:16px;padding-left:.55em;text-indent:-.55em}
 .det .ast{display:inline-block;width:.55em;text-indent:0}
 .det mark{background:rgba(185,154,106,.3);padding:0 6px;border-radius:6px;font-weight:700;color:var(--main)}
@@ -346,17 +348,18 @@ body.pre .music{opacity:0;pointer-events:none}
 .nt{flex:none;aspect-ratio:720/329;background-image:url(assets/note_top.webp)}
 .nm{flex:1 1 auto;min-height:0;margin:-1px 0;background-image:url(assets/note_mid.webp)}
 .nb{flex:none;aspect-ratio:720/116;background-image:url(assets/note_bot.webp)}
+.paper p,.m-card p,.paper .who,.m-card .who{font-family:'BuJangNim','Nanum Myeongjo',serif;font-weight:400}
 .paper p,.m-card p{color:var(--char)}
-.paper p{position:absolute;left:26px;right:26px;top:82px;font-size:14px;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
-.paper .who{position:absolute;right:26px;bottom:40px;font-weight:800;color:var(--main);font-size:14px}
+.paper p{position:absolute;left:26px;right:26px;top:80px;font-size:16px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
+.paper .who{position:absolute;right:26px;bottom:40px;color:var(--main);font-size:17px}
 .del{position:absolute;top:58px;right:16px;z-index:4;width:24px;height:24px;font-size:12px;color:var(--char);opacity:.55;background:rgba(255,255,255,.5);border-radius:50%}
 .gb-empty{margin:0 auto;font-size:13px;opacity:.6;padding:32px 0}
 #modal{position:fixed;inset:0;z-index:210;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:24px}
 #modal.show{display:flex}
 .m-card{position:relative;width:100%;max-width:400px;aspect-ratio:720/1046;max-height:80dvh;display:flex;flex-direction:column;text-align:left;filter:drop-shadow(0 16px 32px rgba(0,0,0,.5))}
 .m-card .nm{padding:8px 30px 6px;overflow-y:auto;display:flex;flex-direction:column;-webkit-overflow-scrolling:touch}
-.m-card p{font-size:15px;line-height:2;white-space:pre-wrap;overflow-wrap:anywhere}
-.m-card .who{display:block;margin-top:auto;padding-top:24px;text-align:right;font-weight:800;color:var(--main)}
+.m-card p{font-size:17px;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere}
+.m-card .who{display:block;margin-top:auto;padding-top:24px;text-align:right;color:var(--main);font-size:19px}
 #m-x{position:fixed;top:max(16px,env(safe-area-inset-top));right:16px;width:40px;height:40px}
 #m-x::before,#m-x::after{content:"";position:absolute;left:8px;right:8px;top:50%;height:1px;background:#fff;transform:rotate(45deg)}
 #m-x::after{transform:rotate(-45deg)}
@@ -377,7 +380,7 @@ body.pre .music{opacity:0;pointer-events:none}
 .filmstrip{margin:72px -60px 56px;display:flex;justify-content:center;transform:rotate(-5deg)}
 .strip{position:relative;flex:none;padding:30px 0;--pw:min(54vw,260px);box-shadow:0 6px 10px rgba(52,51,47,.3)}
 .track{position:relative;display:flex;animation:filmrun 18s linear infinite;animation-play-state:paused}
-.filmstrip.run .track{animation-play-state:running}
+.filmstrip.run .track{animation-play-state:running;will-change:transform}
 .track::before,.track::after{content:"";position:absolute;left:0;right:0;height:30px;background:url(assets/film_band.png) repeat-x 0 0/calc(var(--pw) + 12px) 30px;z-index:1}
 .track::before{top:-30px}.track::after{bottom:-30px}
 @keyframes filmrun{to{transform:translate3d(calc(-2 * (var(--pw) + 12px)),0,0)}}
@@ -485,23 +488,23 @@ body.pre .music{opacity:0;pointer-events:none}
   <div class="stitle"><div class="t-en">Notice</div><div class="t-ko">안내사항</div></div>
   <div class="det">
     <h3>주차 안내</h3>
-    <p>AK플라자 지하 B3~B8에 주차가 가능하며, <mark>지하 B5~B6</mark>에 주차하시면 예식장으로 이동하기 가장 편리합니다. (총 3,200대 주차 가능)</p>
+    <p>AK플라자 지하 B3~B8에 주차가 가능하며,<br><b><mark>지하 B5~B6</mark>에 주차하시면 예식장으로 이동하기 가장 편리합니다.</b> (총 3,200대 주차 가능)</p>
     <p style="margin-top:8px">주차장 기둥에 ‘IVEX’ 표시가 있는 구역에 주차하시면 엘리베이터를 더욱 편리하게 이용하실 수 있습니다.</p>
 
     <h3>주차 후 오시는 길</h3>
-    <p>사진 속 ‘AK플라자 엘리베이터’를 이용하시면 예식장까지 편리하게 올라오실 수 있습니다.<br>에스컬레이터를 이용하시는 경우, 반드시 ‘아이벡스컨벤션’ 안내 간판이 있는 에스컬레이터를 이용해 주세요.</p>
+    <p>사진 속 ‘AK플라자 엘리베이터’를 이용하시면 예식장까지 편리하게 올라오실 수 있습니다.<br><span class="fit">에스컬레이터를 이용하시는 경우, 반드시 ‘아이벡스컨벤션’</span><br>안내 간판이 있는 에스컬레이터를 이용해 주세요.</p>
     <div class="ph3"><figure><img src="assets/d1.jpg" alt="" loading="lazy">주차장 내 엘리베이터</figure><figure><img src="assets/d2.jpg" alt="" loading="lazy">주차장 내 엘리베이터</figure><figure><img src="assets/d3.jpg" alt="" loading="lazy">주차장 내 에스컬레이터</figure></div>
 
     <h3>광명역에서 오시는 길</h3>
-    <p>광명역에서 오시는 경우, <mark>1번 출구</mark> 앞 보행자 도로를 이용하시는 것을 추천드립니다. AK플라자 방면으로 횡단보도 건너신 후 탑텐 옆 골목의 로또판매점을 찾아주세요! 사진 속 외부 에스컬레이터를 이용하면 편리합니다.</p>
+    <p>광명역에서 오시는 경우, <mark>1번 출구</mark> 앞 보행자 도로를 이용하시는 것을 추천드립니다.<br>AK플라자 방면으로 횡단보도 건너신 후 탑텐 옆 골목의 로또판매점을 찾아주세요!<br>사진 속 외부 에스컬레이터를 이용하면 편리합니다.</p>
     <div class="ph3" style="grid-template-columns:1fr 1fr"><figure><img src="assets/dlotto.jpg" alt="" loading="lazy">로또 판매점</figure><figure><img src="assets/desc.jpg" alt="" loading="lazy">외부 에스컬레이터</figure></div>
     <p class="star"><span class="ast">*</span>AK플라자 ‘내부’ 에스컬레이터는 4층까지만 운행하며 5층 예식장과 연결되어 있지 않으니 이용 시 참고 부탁드립니다.</p>
 
     <h3>연회장 안내</h3>
-    <p>연회장은 로비와 같은 층에 맞닿아 있습니다. 예식 30분 전부터 2시간 동안 이용 가능합니다.</p>
+    <p>연회장은 로비와 같은 층에 맞닿아 있습니다.<br>예식 30분 전부터 2시간 동안 이용 가능합니다.</p>
 
     <h3>웰컴드링크존</h3>
-    <p>로비에 하객분들을 위한 ‘웰컴드링크존’이 준비되어 있습니다. 커피, 주스 등이 준비되어 있으며 이곳에서 셀프 주차등록(2시간)이 가능합니다.</p>
+    <p>로비에 하객분들을 위한 ‘웰컴드링크존’이 준비되어 있습니다. 커피, 주스 등이 준비되어 있으며 <b>이곳에서 셀프 주차등록(2시간)이 가능합니다.</b></p>
   </section>
 
 <!-- 8. RSVP -->
@@ -731,11 +734,12 @@ $('#tmapLink').addEventListener('click',e=>{
 }})();
 
 
-/* ---- RSVP 하단 시트: RSVP 섹션을 지나 마음 전하실 곳이 보이기 시작할 때 한 번 올라옴 ---- */
-(function(){const sh=$('#rsSheet');let shown=false;
+/* ---- RSVP 하단 시트: Save the date 의 '결혼식까지 ○○일 남았습니다' 문구가 화면 위로 지나갈 때 한 번 올라옴 ---- */
+(function(){const sh=$('#rsSheet'),msg=$('#cdMsg');let shown=false;
   const open=()=>{if(shown||$('#rsvpModal').classList.contains('show'))return;shown=true;sh.classList.add('show');sh.setAttribute('aria-hidden','false')};
   const close=()=>{sh.classList.remove('show');sh.setAttribute('aria-hidden','true')};
-  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.boundingClientRect.top>=0)open()}),{rootMargin:'0px 0px -45% 0px',threshold:0}).observe($('#gift'));
+  const chk=()=>{if(shown)return;const r=msg.getBoundingClientRect();if(r.height&&r.bottom<innerHeight*.35)open()};
+  addEventListener('scroll',chk,{passive:true});
   sh.querySelector('.rs-x').onclick=close;sh.querySelector('.rs-scrim').onclick=close;
   sh.querySelector('.rs-go').onclick=()=>{close();$('#envBtn').click()};
   $('#envBtn').addEventListener('click',()=>{shown=true});
