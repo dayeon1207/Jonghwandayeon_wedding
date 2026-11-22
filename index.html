@@ -631,7 +631,7 @@ $('#contactBtn').onclick=function(){const f=$('#contactBox');const o=f.classList
 let GAL=[];
 const ROT=[-2.5,1.8,-1.2,2.6,-2,1.4,2.2,-1.8,1];
 const frame=o=>'assets/lace_'+(o==='l'?'l':'p')+'.webp';
-const mkItem=u=>({full:u,grid:u,thumb:u});
+const mkItem=u=>{const t=u.indexOf('/gallery/thumb/')<0?u.replace('/gallery/','/gallery/thumb/'):u;return{full:u,grid:t,thumb:t}};
 const V=$('#viewer'),VI=$('#v-img'),VT=$('#v-thumbs');let vi=0;['#viewer','#gallery'].forEach(q=>{const el=document.querySelector(q);['contextmenu','dragstart'].forEach(t=>el.addEventListener(t,e=>e.preventDefault()))});
 function buildGallery(){
   const pg=$('#gPager'),dots=$('#gDots');pg.innerHTML='';dots.innerHTML='';VT.innerHTML='';
