@@ -868,7 +868,7 @@ $('#kakaoBtn').onclick=()=>{
   const base=new URL('.',location.href).href,url=base;
   Kakao.Share.sendDefault({objectType:'feed',
     content:{title:'박종환 ♥ 정다연 결혼합니다',description:'2027.02.20 토 오후 4:20\n광명 아이벡스컨벤션',imageUrl:base+'assets/share.jpg',imageWidth:800,imageHeight:1200,link:{mobileWebUrl:url,webUrl:url}},
-    buttons:[{title:'청첩장 보기',link:{mobileWebUrl:url,webUrl:url}},{title:'게스트스냅',link:{mobileWebUrl:url+'#photo',webUrl:url+'#photo'}}]});
+    buttons:[{title:'청첩장 보기',link:{mobileWebUrl:url,webUrl:url}}]});
 };
 </script>
 
