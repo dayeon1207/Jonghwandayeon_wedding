@@ -497,8 +497,8 @@ body.pre .music{opacity:0;pointer-events:none}
     <div class="ph3"><figure><img src="assets/d1.jpg" alt="" loading="lazy">주차장 내 엘리베이터</figure><figure><img src="assets/d2.jpg" alt="" loading="lazy">주차장 내 엘리베이터</figure><figure><img src="assets/d3.jpg" alt="" loading="lazy">주차장 내 에스컬레이터</figure></div>
 
     <h3>광명역에서 오시는 길</h3>
-    <p>광명역에서 오시는 경우, <mark>1번 출구</mark> 앞 보행자 도로를 이용하시는 것을 추천드립니다.<br>AK플라자 방면으로 횡단보도 건너신 후 탑텐 옆 골목의 로또판매점을 찾아주세요!<br>사진 속 외부 에스컬레이터를 이용하면 편리합니다.</p>
-    <div class="ph3" style="grid-template-columns:1fr 1fr"><figure><img src="assets/dlotto.jpg" alt="" loading="lazy">로또 판매점</figure><figure><img src="assets/desc.jpg" alt="" loading="lazy">외부 에스컬레이터</figure></div>
+    <p>광명역에서 오시는 경우, <mark>1번 출구</mark> 앞 보행자 도로를 이용하시는 것을 추천드립니다.<br>AK플라자 방면으로 횡단보도 건너신 후 정면에 보이는 건물 사이 골목의 로또판매점을 찾아주세요.<br>로또판매점의 우측, 사진 속 외부 에스컬레이터를 이용하면 편리합니다.</p>
+    <div class="ph3"><figure><img src="assets/w1.jpg" alt="" loading="lazy">횡단보도 앞 건물사이</figure><figure><img src="assets/w2.jpg" alt="" loading="lazy">로또판매점</figure><figure><img src="assets/w3.jpg" alt="" loading="lazy">외부 에스컬레이터</figure></div>
     <p class="star"><span class="ast">*</span>AK플라자 ‘내부’ 에스컬레이터는 4층까지만 운행하며 5층 예식장과 연결되어 있지 않으니 이용 시 참고 부탁드립니다.</p>
 
     <h3>연회장 안내</h3>
@@ -583,7 +583,7 @@ body.pre .music{opacity:0;pointer-events:none}
     </div>
   </div>
 </div>
-<div id="rsSheet" aria-hidden="true"><div class="rs-scrim"></div><div class="rs-panel" role="dialog" aria-label="참석 여부 알려주기"><button class="rs-x" type="button" aria-label="닫기"></button><div class="rs-t">함께하는 날을 기다려요</div><p class="rs-d">귀한 걸음을 해주시는 분들께<br>더 좋은 자리를 준비하고자 하오니,<br>참석 여부 전달을 부탁드립니다</p><button class="rs-go" type="button">참석 여부 알려주기</button></div></div>
+<div id="rsSheet" aria-hidden="true"><div class="rs-scrim"></div><div class="rs-panel" role="dialog" aria-label="참석 여부 전달"><button class="rs-x" type="button" aria-label="닫기"></button><div class="rs-t">함께하는 날을 기다려요</div><p class="rs-d">귀한 걸음을 해주시는 분들께<br>더 좋은 자리를 준비하고자 하오니,<br>참석 여부 전달을 부탁드립니다</p><button class="rs-go" type="button">참석 여부 전달</button></div></div>
 <audio id="bgm" src="assets/bgm.mp3" loop preload="none"></audio>
 <button class="music" id="musicBtn" type="button" aria-label="배경 음악 일시정지됨, 눌러서 재생" aria-pressed="false"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="sr" id="musicState" aria-live="polite">배경 음악 일시정지됨</span></button>
 <div class="toast" id="toast"></div>
@@ -787,10 +787,10 @@ $('#envBtn').onclick=o;$('#r-x').onclick=c;m.addEventListener('click',e=>{if(e.t
     const k=new Date(now+9*36e5),today=Date.UTC(k.getUTCFullYear(),k.getUTCMonth(),k.getUTCDate()),dd=Math.round((Date.UTC(2027,1,20)-today)/864e5);
     const m=$('#cdMsg');
     if(diff>0){
-      const s=Math.floor(diff/1000);
+      const s=Math.floor(diff/1000),dn=s>=86400?Math.floor(s/86400):dd;
       $('#cdD').textContent=p(Math.floor(s/86400));$('#cdH').textContent=p(Math.floor(s%86400/3600));$('#cdM').textContent=p(Math.floor(s%3600/60));$('#cdS').textContent=p(s%60);
-      m.innerHTML=dd>0?'박종환 ♥︎ 정다연 결혼식이 <span class="num"><span>'+dd+'</span></span><b>일</b> 남았습니다.':'<b>오늘</b>은 박종환 ♥︎ 정다연의 결혼식 날입니다.';
-      if(dd>0)fitNum();
+      m.innerHTML=dn>0?'박종환 ♥︎ 정다연 결혼식이 <span class="num"><span>'+dn+'</span></span><b>일</b> 남았습니다.':'<b>오늘</b>은 박종환 ♥︎ 정다연의 결혼식 날입니다.';
+      if(dn>0)fitNum();
     }else{
       ['D','H','M','S'].forEach(x=>$('#cd'+x).textContent='00');
       m.innerHTML=dd===0?'<b>오늘</b>은 박종환 ♥︎ 정다연의 결혼식 날입니다.<br>함께해 주셔서 감사합니다.':'박종환 ♥︎ 정다연의 결혼식이 <b>무사히 마무리</b>되었습니다.<br>함께해 주셔서 감사합니다.';
@@ -866,9 +866,8 @@ $('#kakaoBtn').onclick=()=>{
   if(!window.Kakao||!CFG.KAKAO_JS_KEY){toast('카카오 JavaScript 키 설정이 필요합니다');return}
   if(!Kakao.isInitialized())Kakao.init(CFG.KAKAO_JS_KEY);
   const base=new URL('.',location.href).href,url=base;
-  Kakao.Share.sendDefault({objectType:'feed',
-    content:{title:'박종환 ♥ 정다연 결혼합니다',description:'2027.02.20 토 오후 4:20\n광명 아이벡스컨벤션',imageUrl:base+'assets/share.jpg',imageWidth:800,imageHeight:1200,link:{mobileWebUrl:url,webUrl:url}},
-    buttons:[{title:'청첩장 보기',link:{mobileWebUrl:url,webUrl:url}},{title:'게스트스냅',link:{mobileWebUrl:url+'#photo',webUrl:url+'#photo'}}]});
+  const link={mobileWebUrl:url,webUrl:url};
+  Kakao.Share.sendDefault({objectType:'feed',content:{title:'박종환 ♥ 정다연 결혼합니다',description:'2027.02.20 토 오후 4:20\n광명 아이벡스컨벤션',imageUrl:base+'assets/share.jpg',imageWidth:800,imageHeight:1200,link},buttons:[{title:'청첩장 보기',link},{title:'게스트스냅',link:{mobileWebUrl:url+'#photo',webUrl:url+'#photo'}}]});
 };
 </script>
 
