@@ -19,5 +19,12 @@ window.INVITE_CONFIG = {
   INTRO_VIDEO_POSTER: "assets/intro_poster.jpg",                                    // 선택: 영상 로딩 전 표시할 이미지 경로
   VENUE_LAT: 37.4184882,                                      // 아이벡스컨벤션(양지로 17) 위도
   VENUE_LNG: 126.8827907,
-  GALLERY: [ /* 예: "assets/g1.jpg", "assets/g2.jpg" */ ]
+  GALLERY: [                                                 // 갤러리 24장 — 여기 채워 두면 4.5초 대기·HEAD 60회 없이 바로 뜸 (썸네일은 index.html이 thumb/로 연결)
+    "assets/gallery/1.jpg",  "assets/gallery/2.jpg",  "assets/gallery/3.jpg",  "assets/gallery/4.jpg",
+    "assets/gallery/5.jpg",  "assets/gallery/6.jpg",  "assets/gallery/7.jpg",  "assets/gallery/8.jpg",
+    "assets/gallery/9.jpg",  "assets/gallery/10.jpg", "assets/gallery/11.jpg", "assets/gallery/12.jpg",
+    "assets/gallery/13.jpg", "assets/gallery/14.jpg", "assets/gallery/15.jpg", "assets/gallery/16.jpg",
+    "assets/gallery/17.jpg", "assets/gallery/18.jpg", "assets/gallery/19.jpg", "assets/gallery/20.jpg",
+    "assets/gallery/21.jpg", "assets/gallery/22.jpg", "assets/gallery/23.jpg", "assets/gallery/24.jpg"
+  ]
 };
