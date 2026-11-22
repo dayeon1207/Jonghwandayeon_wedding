@@ -395,6 +395,7 @@ body.pre .music{opacity:0;pointer-events:none}
 .sign{margin-top:48px;font-size:15px;color:var(--main);font-weight:700}
 .toast{position:fixed;left:50%;bottom:48px;transform:translate(-50%,16px);background:rgba(52,51,47,.95);color:#fff;font-size:14px;padding:12px 24px;border-radius:var(--pill);opacity:0;pointer-events:none;transition:.3s;z-index:300}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.two{white-space:pre;width:max-content;text-align:center;line-height:1.7;padding:14px 28px}
 </style>
 </head>
 <body class="locked pre">
@@ -593,7 +594,7 @@ body.pre .music{opacity:0;pointer-events:none}
 <script>
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const CFG=window.INVITE_CONFIG||{};
-function toast(t,ms){const e=$('#toast');e.textContent=t;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),ms||2000)}
+function toast(t,ms){const e=$('#toast');e.classList.toggle('two',t.indexOf('\n')>-1);e.textContent=t;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),ms||2000)}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 /* ---- 메인 사진을 오프닝 뒤에서 미리 받아 디코딩해 두어, 커튼이 열리는 즉시 보이게 ---- */
@@ -841,7 +842,7 @@ const SNAP_URL=CFG.GUEST_SNAP_UPLOAD_URL||'';
   }
   const SNAP_OPEN=Date.UTC(2027,1,20,7,20); // 2027-02-20 16:20 KST
   a.addEventListener('click',e=>{
-    if(Date.now()<SNAP_OPEN){e.preventDefault();toast('업로드는 27.02.20 예식당일 활성화됩니다♥︎',2800);return}
+    if(Date.now()<SNAP_OPEN){e.preventDefault();toast('업로드는 27.02.20 PM04:20\n예식이 시작되면 활성화됩니다♥︎',2800);return}
     if(!SNAP_URL){if(!PHOTO){e.preventDefault();toast('업로드 링크가 곧 안내됩니다')}else if(PHOTO_END&&Date.now()>PHOTO_END){e.preventDefault();toast('사진 업로드 기간이 마감되었습니다')}return}
     e.preventDefault();
     if(PHOTO_END&&Date.now()>PHOTO_END){toast('사진 업로드 기간이 마감되었습니다');return}
