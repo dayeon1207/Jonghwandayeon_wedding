@@ -582,7 +582,7 @@ body.pre .music{opacity:0;pointer-events:none}
     </div>
   </div>
 </div>
-<div id="rsSheet" aria-hidden="true"><div class="rs-scrim"></div><div class="rs-panel" role="dialog" aria-label="참석 여부 알려주기"><button class="rs-x" type="button" aria-label="닫기"></button><div class="rs-t">함께하는 날을 기다려요</div><p class="rs-d">귀한 걸음을 해주시는 분들께 더 좋은 자리를 준비하고자 하오니,<br>참석 여부 전달을 부탁드립니다</p><button class="rs-go" type="button">참석 여부 알려주기</button></div></div>
+<div id="rsSheet" aria-hidden="true"><div class="rs-scrim"></div><div class="rs-panel" role="dialog" aria-label="참석 여부 알려주기"><button class="rs-x" type="button" aria-label="닫기"></button><div class="rs-t">함께하는 날을 기다려요</div><p class="rs-d">귀한 걸음을 해주시는 분들께<br>더 좋은 자리를 준비하고자 하오니,<br>참석 여부 전달을 부탁드립니다</p><button class="rs-go" type="button">참석 여부 알려주기</button></div></div>
 <audio id="bgm" src="assets/bgm.mp3" loop preload="none"></audio>
 <button class="music" id="musicBtn" type="button" aria-label="배경 음악 일시정지됨, 눌러서 재생" aria-pressed="false"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="sr" id="musicState" aria-live="polite">배경 음악 일시정지됨</span></button>
 <div class="toast" id="toast"></div>
@@ -662,8 +662,8 @@ V.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-x,dy=e.ch
 GAL=(CFG.GALLERY||[]).filter(Boolean).map(mkItem);buildGallery();
 (function(){ // assets/gallery/1.jpg, 2.jpg … 존재만 HEAD 로 확인 (번호가 끊기면 거기서 멈춤, 최대 60장). 썸네일은 assets/gallery/thumb/N.jpg
   if(GAL.length)return;
-  setTimeout(probe,4500);
-  function probe(){
+  setTimeout(imgProbe,4500);
+  function imgProbe(){
     const N=60,isImg=k=>fetch('assets/gallery/'+k+'.jpg',{method:'HEAD',cache:'no-store'}).then(r=>r.ok&&/image/.test(r.headers.get('content-type')||'')).catch(()=>false);
     Promise.all(Array.from({length:N},(_,k)=>isImg(k+1))).then(ok=>{let n=0;while(n<N&&ok[n])n++;
       if(n){GAL=Array.from({length:n},(_,k)=>({full:'assets/gallery/'+(k+1)+'.jpg',grid:'assets/gallery/thumb/'+(k+1)+'.jpg',thumb:'assets/gallery/thumb/'+(k+1)+'.jpg'}));buildGallery()}});
