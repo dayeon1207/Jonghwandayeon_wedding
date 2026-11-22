@@ -6,7 +6,7 @@
 <title>박종환 ♥ 정다연 결혼합니다</title>
 <meta name="description" content="2027년 2월 20일 토요일 오후 4시 20분, 광명 아이벡스컨벤션">
 <meta property="og:title" content="박종환 ♥ 정다연 결혼합니다">
-<meta property="og:description" content="2027.02.20 SAT PM 04:20 · 광명 아이벡스컨벤션">
+<meta property="og:description" content="2027.02.20 토요일 오후4:20 　　 　 　 　아이벡스컨벤션">
 <meta property="og:image" content="assets/share.jpg">
 <link rel="preload" as="image" href="assets/curtain.jpg">
 <link rel="preload" as="font" type="font/otf" href="assets/fonts/ROMANTICE.otf" crossorigin>
@@ -153,7 +153,7 @@ section{position:relative;z-index:1;padding:80px 24px;text-align:center}
 #v-close::before,#v-close::after{content:"";position:absolute;left:8px;right:8px;top:50%;height:1px;background:#fff;transform:rotate(45deg)}
 #v-close::after{transform:rotate(-45deg)}
 #v-stage{flex:1;width:100%;display:flex;align-items:center;justify-content:center;position:relative;min-height:0;padding:64px 8px 8px}
-#v-img{max-width:100%;max-height:100%;object-fit:contain;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;-webkit-touch-callout:none;pointer-events:none;touch-action:pan-y;transition:opacity .25s}
+#v-img{max-width:100%;max-height:100%;object-fit:contain;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;-webkit-touch-callout:none;pointer-events:none;touch-action:pan-y}
 #viewer,#gallery{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .v-nav{position:absolute;top:50%;width:48px;height:48px;margin-top:-24px;color:#fff;font-size:28px;font-weight:200;opacity:.8}
 #v-prev{left:0}#v-next{right:0}
@@ -631,8 +631,8 @@ $('#contactBtn').onclick=function(){const f=$('#contactBox');const o=f.classList
 let GAL=[];
 const ROT=[-2.5,1.8,-1.2,2.6,-2,1.4,2.2,-1.8,1];
 const frame=o=>'assets/lace_'+(o==='l'?'l':'p')+'.webp';
-const mkItem=u=>({full:u,grid:u,thumb:u});
-const V=$('#viewer'),VI=$('#v-img'),VT=$('#v-thumbs');let vi=0;['#viewer','#gallery'].forEach(q=>{const el=document.querySelector(q);['contextmenu','dragstart'].forEach(t=>el.addEventListener(t,e=>e.preventDefault()))});
+const mkItem=u=>{const t=u.indexOf('/gallery/thumb/')<0?u.replace('/gallery/','/gallery/thumb/'):u;return{full:u,grid:t,thumb:t}};
+const V=$('#viewer'),VI=$('#v-img'),VT=$('#v-thumbs');let vi=0,vSeq=0,vRestOn=false;const vCache=new Map();['#viewer','#gallery'].forEach(q=>{const el=document.querySelector(q);['contextmenu','dragstart'].forEach(t=>el.addEventListener(t,e=>e.preventDefault()))});
 function buildGallery(){
   const pg=$('#gPager'),dots=$('#gDots');pg.innerHTML='';dots.innerHTML='';VT.innerHTML='';
   const n=GAL.length||9,pages=Math.ceil(n/9);
@@ -653,8 +653,31 @@ function buildGallery(){
   pg.onscroll=setDot;setDot();
   GAL.forEach((it,k)=>{const t=document.createElement('div');t.className='vt';t.onclick=()=>showV(k);const im=new Image();im.onerror=()=>{im.onerror=null;im.src=it.full};im.src=it.thumb;im.alt='';im.draggable=false;t.appendChild(im);VT.appendChild(t)});
 }
-function openV(i){V.classList.add('show');showV(i);document.body.style.overflow='hidden'}
-function showV(i){vi=(i+GAL.length)%GAL.length;VI.style.opacity=0;VI.src=GAL[vi].full;VI.onload=()=>VI.style.opacity=1;[...VT.children].forEach((t,k)=>t.classList.toggle('cur',k===vi));VT.children[vi]?.scrollIntoView({inline:'center',block:'nearest'})}
+/* 뷰어 이미지 프리로드 캐시: 열려 있을 때 full 이미지를 미리 받아 두고, 넘길 때는 숨기지 않고 바로 교체 */
+function vImg(u){if(!u)return null;let im=vCache.get(u);if(!im){im=new Image();im.decoding='async';im.src=u;vCache.set(u,im)}return im}
+const vAt=i=>GAL[(i%GAL.length+GAL.length)%GAL.length];
+const vReady=im=>!!(im&&im.complete&&im.naturalWidth);
+function vPre(i,n){for(let k=1;k<=n;k++){const a=vAt(i+k),b=vAt(i-k);if(a)vImg(a.full);if(b)vImg(b.full)}}
+function openV(i){V.classList.add('show');showV(i);document.body.style.overflow='hidden';vPreloadRest()}
+function showV(i){
+  vi=(i+GAL.length)%GAL.length;const it=GAL[vi];if(!it)return;
+  const seq=++vSeq,full=it.full,thumb=it.thumb||it.grid||full;
+  const cached=vCache.get(full);
+  if(vReady(cached)){if(VI.getAttribute('src')!==full)VI.src=full}
+  else{
+    if(VI.getAttribute('src')!==thumb)VI.src=thumb;
+    const im=vImg(full),swap=()=>{if(seq===vSeq&&GAL[vi].full===full&&VI.getAttribute('src')!==full)VI.src=full};
+    if(vReady(im))swap();else im.addEventListener('load',swap,{once:true});
+  }
+  [...VT.children].forEach((t,k)=>t.classList.toggle('cur',k===vi));VT.children[vi]?.scrollIntoView({inline:'center',block:'nearest'});
+  vPre(vi,2);
+}
+/* 나머지 사진은 한 장씩 조용히 백그라운드 프리로드(동시 요청 최소화) */
+function vPreloadRest(){
+  if(vRestOn)return;vRestOn=true;let k=0;
+  const step=()=>{while(k<GAL.length&&vReady(vCache.get(GAL[k].full)))k++;if(k>=GAL.length)return;const im=vImg(GAL[k].full);k++;const next=()=>setTimeout(step,120);if(vReady(im))next();else{im.addEventListener('load',next,{once:true});im.addEventListener('error',next,{once:true})}};
+  setTimeout(step,600);
+}
 function closeV(){V.classList.remove('show');document.body.style.overflow=''}
 $('#v-close').onclick=closeV;$('#v-prev').onclick=()=>showV(vi-1);$('#v-next').onclick=()=>showV(vi+1);
 document.addEventListener('keydown',e=>{if(!V.classList.contains('show'))return;if(e.key==='Escape')closeV();if(e.key==='ArrowLeft')showV(vi-1);if(e.key==='ArrowRight')showV(vi+1)});
@@ -867,7 +890,7 @@ $('#kakaoBtn').onclick=()=>{
   if(!Kakao.isInitialized())Kakao.init(CFG.KAKAO_JS_KEY);
   const base=new URL('.',location.href).href,url=base;
   const link={mobileWebUrl:url,webUrl:url};
-  Kakao.Share.sendDefault({objectType:'feed',content:{title:'박종환 ♥ 정다연 결혼합니다',description:'2027.02.20 토 오후 4:20\n광명 아이벡스컨벤션',imageUrl:base+'assets/share.jpg',imageWidth:800,imageHeight:1200,link},buttons:[{title:'청첩장 보기',link},{title:'게스트스냅',link:{mobileWebUrl:url+'#photo',webUrl:url+'#photo'}}]});
+  Kakao.Share.sendDefault({objectType:'feed',content:{title:'박종환 ♥ 정다연 결혼합니다',description:'2027.02.20 토 오후 4:20\n광명 아이벡스컨벤션',imageUrl:base+'assets/share.jpg',imageWidth:800,imageHeight:1200,link},buttons:[{title:'청첩장 보기',link}]});
 };
 </script>
 
